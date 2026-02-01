@@ -1,86 +1,74 @@
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import { useState, useEffect } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:8000/api';
 
-dotenv.config();
+function App() {
+  const [count, setCount] = useState(0);
+  const [apiStatus, setApiStatus] = useState('Checking...');
+  const [isChecking, setIsChecking] = useState(false);
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const app = express();
-const PORT = process.env.PORT || 4004;
+  console.log('API Base URL:', API_BASE_URL);
 
-// Frontend path
-const clientDist = path.resolve(__dirname, '../client/dist');
+  const checkApiHealth = async () => {
+    setIsChecking(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/health`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        setApiStatus('✅ API is running');
+      } else {
+        setApiStatus('❌ API is not healthy');
+      }
+    } catch (error) {
+      setApiStatus('❌ Failed to reach API');
+    }
+    setIsChecking(false);
+  };
 
-// --- Middleware ---
-app.use(cors({
-  origin: 'http://localhost:5173', // dev frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(clientDist));
+  useEffect(() => {
+    checkApiHealth();
+  }, []);
 
-// --- API routes (always on top!) ---
-app.get('/api/get', (req, res) => {
-  res.json({ success: true, message: 'Server is running Sam jan 🚀' });
-});
+  return (
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
 
-// SPA fallback (for frontend routing)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(clientDist, 'index.html'));
-});
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
+      </div>
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
 
+      <div className="card">
+        <h3>API Health Check</h3>
+        <p>{apiStatus}</p>
+        <button onClick={checkApiHealth} disabled={isChecking}>
+          {isChecking ? 'Refreshing...' : 'Refresh'}
+        </button>
+      </div>
+    </>
+  );
+}
 
-//-------------------------------------------------------------------------
-// import express from 'express';
-// import path from 'path';
-// import { fileURLToPath } from 'url';
-// import dotenv from 'dotenv'
-
-// dotenv.config()
-
-// const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// const app = express();
-
-// const PORT = Number(process.env.PORT) || 4004;
-
-// // API-маршруты подключаются до статики
-// // app.use('/api', apiRouter);
-
-// // Опционально: раздача статики из client/dist (если не отдаётся через Nginx)
-// const clientDist = path.resolve(__dirname, '../client/dist');
-// // app.use(express.static(clientDist));
-
-// // SPA fallback: для клиентского роутинга отдаём index.html на неизвестные пути
-// app.get('/', (req, res, next) => {
-//   if (req.path.startsWith('/api')) return next();
-//   res.sendFile(path.join(clientDist, 'index.html'));
-// });
-
-
-// app.get("/api/get", async (req,res)=>{
-//   res.send({success: true,message:"Server is running Sam jan"})
-// })
-
-// process.on('uncaughtException', (err) => {
-//   console.error('Uncaught Exception:', err);
-// });
-
-// process.on('unhandledRejection', (reason, promise) => {
-//   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-// });
-
-
-
-// app.listen(PORT, () => {
-//   console.log(`Server listening on port ${PORT}`);
-// });
-
-//-------------
+export default App;
