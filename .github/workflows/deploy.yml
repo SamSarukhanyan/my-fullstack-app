@@ -7,6 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted   # runner на EC2
+    environment: production   # имя environment в GitHub (Settings → Environments) — оттуда подтягиваются secrets
 
     steps:
       - name: Checkout
@@ -16,7 +17,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          
 
       - name: Install client deps
         run: npm ci
@@ -37,6 +37,16 @@ jobs:
       - name: Install server deps
         run: npm ci --omit=dev
         working-directory: /home/sam/app/server
+
+      - name: Write server .env from environment secrets
+        run: |
+          printf 'PORT=%s\nNODE_ENV=%s\nAPI_KEY=%s\n' \
+            "${{ secrets.PORT }}" \
+            "${{ secrets.NODE_ENV }}" \
+            "${{ secrets.API_KEY }}" \
+            > /home/sam/app/server/.env
+          chown sam:www-data /home/sam/app/server/.env
+          chmod 600 /home/sam/app/server/.env
 
       - name: Restart PM2
         run: |
