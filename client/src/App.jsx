@@ -1,24 +1,18 @@
 import { useState, useEffect } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
+
 const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || '/api';
 
 function App() {
-  const [count, setCount] = useState(0);
   const [apiStatus, setApiStatus] = useState('Checking...');
   const [isChecking, setIsChecking] = useState(false);
-
-  console.log('API Base URL:', API_BASE_URL);
 
   const checkApiHealth = async () => {
     setIsChecking(true);
     try {
       const response = await fetch(`${API_BASE_URL}/health`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
       });
       if (response.ok) {
         setApiStatus('✅ API is running');
@@ -36,38 +30,67 @@ function App() {
   }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React + Deploy</h1>
-
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+    <div className="page">
+      <header className="hero">
+        <span className="hero-badge">Fullstack</span>
+        <h1 className="hero-title">
+          <span className="hero-title-line">Modern</span>
+          <span className="hero-title-line hero-title-accent">Deploy</span>
+        </h1>
+        <p className="hero-lead">
+          React + Vite + Express, production-ready with health checks and CI/CD.
         </p>
-      </div>
+      </header>
 
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <main className="main">
+        <section className="section section-health">
+          <h2 className="section-title">API Health Check</h2>
+          <div className="health-card">
+            <p className={`health-status ${apiStatus.includes('✅') ? 'health-ok' : 'health-fail'}`}>
+              {apiStatus}
+            </p>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={checkApiHealth}
+              disabled={isChecking}
+            >
+              {isChecking ? 'Checking…' : 'Refresh status'}
+            </button>
+          </div>
+        </section>
 
-      <div className="card">
-        <h3>API Health Check</h3>
-        <p>{apiStatus}</p>
-        <button onClick={checkApiHealth} disabled={isChecking}>
-          {isChecking ? 'Refreshing...' : 'Refresh'}
-        </button>
-      </div>
-    </>
+        <section className="section section-features">
+          <h2 className="section-title">Stack</h2>
+          <ul className="feature-grid">
+            <li className="feature-card">
+              <span className="feature-icon">⚡</span>
+              <h3>Vite</h3>
+              <p>Fast dev &amp; build</p>
+            </li>
+            <li className="feature-card">
+              <span className="feature-icon">⚛️</span>
+              <h3>React</h3>
+              <p>UI components</p>
+            </li>
+            <li className="feature-card">
+              <span className="feature-icon">🟢</span>
+              <h3>Node</h3>
+              <p>Express API</p>
+            </li>
+            <li className="feature-card">
+              <span className="feature-icon">🚀</span>
+              <h3>Deploy</h3>
+              <p>EC2, Nginx, PM2</p>
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      <footer className="footer">
+        <p>Built for production · Health check enabled</p>
+      </footer>
+    </div>
   );
 }
 
