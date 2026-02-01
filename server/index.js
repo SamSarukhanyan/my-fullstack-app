@@ -23,6 +23,17 @@ app.get('/', (req, res, next) => {
   res.sendFile(path.join(clientDist, 'index.html'));
 });
 
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
