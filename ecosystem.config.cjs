@@ -1,5 +1,5 @@
 // ecosystem.config.cjs
-require('dotenv').config();
+require('dotenv').config({ path: './.env.production' });
 
 module.exports = {
   apps: [
@@ -10,12 +10,12 @@ module.exports = {
       instances: "max",
       exec_mode: 'cluster',
       env: {
-       NODE_ENV: process.env.NODE_ENV,
-        PORT: process.env.PORT,
+        NODE_ENV: process.env.NODE_ENV || 'development',
+        PORT: process.env.PORT || 4004,
       },
       env_production: {
-        NODE_ENV: process.env.NODE_ENV,
-        PORT: process.env.PORT,
+        NODE_ENV: process.env.NODE_ENV || 'production',
+        PORT: process.env.PORT || 4004,
       },
       error_file: '/home/sam/logs/api-err.log',
       out_file: '/home/sam/logs/api-out.log',
