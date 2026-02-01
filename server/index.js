@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -9,27 +10,26 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 4004;
 
+// Frontend path
 const clientDist = path.resolve(__dirname, '../client/dist');
 
-// --------------------
-// 1️⃣ API routes — ՄԻՇՏ վերևում
-// --------------------
-app.get('/api/get', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Server is running Sam jan 🚀',
-  });
-});
-
-// --------------------
-// 2️⃣ Static frontend
-// --------------------
+// --- Middleware ---
+app.use(cors({
+  origin: 'http://localhost:5173', // dev frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(clientDist));
 
-// --------------------
-// 3️⃣ SPA fallback
-// --------------------
-app.get('/', (req, res) => {
+// --- API routes (always on top!) ---
+app.get('/api/get', (req, res) => {
+  res.json({ success: true, message: 'Server is running Sam jan 🚀' });
+});
+
+// SPA fallback (for frontend routing)
+app.get('*', (req, res) => {
   res.sendFile(path.join(clientDist, 'index.html'));
 });
 
@@ -38,6 +38,7 @@ app.listen(PORT, () => {
 });
 
 
+//-------------------------------------------------------------------------
 // import express from 'express';
 // import path from 'path';
 // import { fileURLToPath } from 'url';
@@ -82,3 +83,4 @@ app.listen(PORT, () => {
 //   console.log(`Server listening on port ${PORT}`);
 // });
 
+//-------------
