@@ -1,0 +1,48 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted   # runner на EC2
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install client deps
+        run: npm ci
+        working-directory: ./client
+
+      - name: Build client
+        run: npm run build
+        working-directory: ./client
+
+      - name: Update app and deploy client
+        run: |
+          cd /home/sam/app
+          git pull
+          rm -rf client/dist
+          cp -r $GITHUB_WORKSPACE/client/dist client/dist
+          chown -R sam:www-data client/dist
+
+      - name: Install server deps
+        run: npm ci --omit=dev
+        working-directory: /home/sam/app/server
+
+      - name: Restart PM2
+        run: |
+          cd /home/sam/app
+          pm2 restart ecosystem.config.cjs --env production
+          pm2 save
+
+      - name: Reload Nginx
+        run: sudo systemctl reload nginx
