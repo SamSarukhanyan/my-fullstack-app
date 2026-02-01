@@ -66,7 +66,3 @@ jobs:
         run: |
           cd /home/sam/app
           pm2 restart ecosystem.config.cjs --env production
-          pm2 save
-
-      - name: Reload Nginx
-        run: sudo nginx -t && sudo systemctl reload nginx
