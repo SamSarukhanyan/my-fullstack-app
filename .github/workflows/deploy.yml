@@ -6,11 +6,11 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted   # runner на EC2
-    environment: production   # имя environment в GitHub (Settings → Environments) — оттуда подтягиваются secrets
+    runs-on: self-hosted
+    environment: production
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -18,35 +18,41 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install client deps
+      # ---------- FRONTEND ----------
+      - name: Install client dependencies
+        working-directory: client
         run: npm ci
-        working-directory: ./client
 
-      - name: Build client
+      - name: Build React app
+        working-directory: client
         run: npm run build
-        working-directory: ./client
 
-      - name: Update app and deploy client
+      - name: Verify React build
         run: |
-          cd /home/sam/app
-          git pull
-          rm -rf client/dist
-          cp -r $GITHUB_WORKSPACE/client/dist client/dist
-          chown -R sam:www-data client/dist
+          test -f client/dist/index.html || (echo "❌ React build missing index.html" && exit 1)
 
-      - name: Install server deps
+      - name: Deploy frontend to nginx root
+        run: |
+          sudo rm -rf /home/sam/app/client/dist
+          sudo mkdir -p /home/sam/app/client
+          sudo cp -r client/dist /home/sam/app/client/dist
+          sudo chown -R sam:www-data /home/sam/app/client/dist
+          sudo chmod -R 755 /home/sam/app/client/dist
+
+      # ---------- BACKEND ----------
+      - name: Install server dependencies
+        working-directory: server
         run: npm ci --omit=dev
-        working-directory: /home/sam/app/server
 
-      - name: Write server .env from environment secrets
+      - name: Write backend .env from secrets
         run: |
-          printf 'PORT=%s\nNODE_ENV=%s\nAPI_KEY=%s\n' \
-            "${{ secrets.PORT }}" \
-            "${{ secrets.NODE_ENV }}" \
-            "${{ secrets.API_KEY }}" \
-            > /home/sam/app/server/.env
-          chown sam:www-data /home/sam/app/server/.env
-          chmod 600 /home/sam/app/server/.env
+          sudo tee /home/sam/app/server/.env > /dev/null <<EOF
+          PORT=${{ secrets.PORT }}
+          NODE_ENV=${{ secrets.NODE_ENV }}
+          API_KEY=${{ secrets.API_KEY }}
+          EOF
+          sudo chown sam:sam /home/sam/app/server/.env
+          sudo chmod 600 /home/sam/app/server/.env
 
       - name: Restart PM2
         run: |
@@ -55,4 +61,4 @@ jobs:
           pm2 save
 
       - name: Reload Nginx
-        run: sudo systemctl reload nginx
+        run: sudo nginx -t && sudo systemctl reload nginx
