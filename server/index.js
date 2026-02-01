@@ -1,74 +1,27 @@
-import { useState, useEffect } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
-const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:8000/api';
+const express = require('express');
+const app = express();
+const cors = require('cors');
+require('dotenv').config();
+const PORT = process.env.PORT || 6000;
 
-function App() {
-  const [count, setCount] = useState(0);
-  const [apiStatus, setApiStatus] = useState('Checking...');
-  const [isChecking, setIsChecking] = useState(false);
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
 
-  console.log('API Base URL:', API_BASE_URL);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
-  const checkApiHealth = async () => {
-    setIsChecking(true);
-    try {
-      const response = await fetch(`${API_BASE_URL}/health`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (response.ok) {
-        setApiStatus('✅ API is running');
-      } else {
-        setApiStatus('❌ API is not healthy');
-      }
-    } catch (error) {
-      setApiStatus('❌ Failed to reach API');
-    }
-    setIsChecking(false);
-  };
 
-  useEffect(() => {
-    checkApiHealth();
-  }, []);
+app.get('/api/get', (req, res) => {
+    res.status(200).json({ message: 'GET request successful' });
+});
+app.get('/api/health', (req, res) => {
+    res.status(200).json({ status: 'OK', Message: 'Server is running' });
+});
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
 
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-
-      <div className="card">
-        <h3>API Health Check</h3>
-        <p>{apiStatus}</p>
-        <button onClick={checkApiHealth} disabled={isChecking}>
-          {isChecking ? 'Refreshing...' : 'Refresh'}
-        </button>
-      </div>
-    </>
-  );
-}
-
-export default App;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
