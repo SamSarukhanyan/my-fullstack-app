@@ -23,6 +23,11 @@ app.get('/', (req, res, next) => {
   res.sendFile(path.join(clientDist, 'index.html'));
 });
 
+
+app.get("/api/get", async (req,res)=>{
+  res.send({success: true,message:"Server is running Sam jan"})
+})
+
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
 });
