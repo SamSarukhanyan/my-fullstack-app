@@ -11,7 +11,6 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('../client/dist'));
 
 
 app.get('/api/get', (req, res) => {
@@ -20,6 +19,7 @@ app.get('/api/get', (req, res) => {
 app.get('/api/health', (req, res) => {
     res.status(200).json({ status: 'OK', Message: 'Server is running' });
 });
+app.use(express.static('../client/dist'));
 
 
 app.listen(PORT, () => {
