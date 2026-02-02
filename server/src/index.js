@@ -26,8 +26,13 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.get('/api/get', (req, res) => {
     res.status(200).json({ message: 'GET request successful' });
 });
+let dbConnected = false;
 app.get('/api/health', (req, res) => {
-    res.status(200).json({ status: 'OK', message: 'Server is running' });
+    res.status(200).json({
+        status: 'OK',
+        message: 'Server is running',
+        db: dbConnected,
+    });
 });
 
 
@@ -51,19 +56,19 @@ app.get('/{*path}', (req, res) => {
     res.sendFile(path.join(clientDistPath, 'index.html'));
 });
 
+const PORT = process.env.PORT || 4004;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
+
 (async () => {
   try {
     await db.sequelize.authenticate();
     await db.sequelize.sync();
+    dbConnected = true;
     console.log("✅ DB connected & synced");
-
-    // Start server AFTER DB is ready
-    const PORT = process.env.PORT || 4004;
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-    });
   } catch (err) {
-    console.error("❌ DB connection failed:", err);
-    process.exit(1);
+    console.error("❌ DB connection failed (API still up):", err.message);
+    // Server already listening; /api/health will return db: false
   }
 })();
