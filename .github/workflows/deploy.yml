@@ -63,7 +63,11 @@ jobs:
           DB_USER=${{ secrets.DB_USER }}
           DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
           DB_NAME=${{ secrets.DB_NAME }}
+<<<<<<< HEAD
           JWT_SECRET="${{ secrets.JWT_SECRET }}"
+=======
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+>>>>>>> 2c96914 (feat: enhance deployment workflow and improve dark theme styling)
           EOF
           sudo chown sam:sam /home/sam/app/server/.env
           sudo chmod 600 /home/sam/app/server/.env
@@ -75,4 +79,8 @@ jobs:
           pm2 save
 
       - name: Reload Nginx
+<<<<<<< HEAD
         run: sudo nginx -t && sudo systemctl reload nginx
+=======
+        run: sudo nginx -t && sudo systemctl reload nginx
+>>>>>>> 2c96914 (feat: enhance deployment workflow and improve dark theme styling)
