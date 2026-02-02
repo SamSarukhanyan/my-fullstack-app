@@ -1,5 +1,6 @@
 // ecosystem.config.cjs
-require('dotenv').config({ path: './.env.production' });
+// PORT and NODE_ENV come from the environment (e.g. set by deploy workflow before pm2 reload).
+// The app itself reads server/.env via db-config.js and index.js.
 
 module.exports = {
   apps: [

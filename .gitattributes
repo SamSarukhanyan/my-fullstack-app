@@ -1,0 +1,6 @@
+# Один формат переносов строк — меньше конфликтов при push с VSCode, GoLand, сервера
+* text=auto eol=lf
+*.{yml,yaml} text eol=lf
+*.{js,jsx,cjs,ts,tsx,json,css,html,md} text eol=lf
+.gitattributes text eol=lf
+.gitignore text eol=lf

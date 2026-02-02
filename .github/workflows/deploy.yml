@@ -73,10 +73,16 @@ jobs:
           sudo chown sam:sam /home/sam/app/server/.env
           sudo chmod 600 /home/sam/app/server/.env
 
+      - name: Ensure PM2 logs directory exists
+        run: sudo mkdir -p /home/sam/logs && sudo chown sam:sam /home/sam/logs
+
       - name: Restart PM2
+        env:
+          PORT: ${{ secrets.PORT }}
+          NODE_ENV: ${{ secrets.NODE_ENV }}
         run: |
           cd /home/sam/app
-          pm2 reload ecosystem.config.cjs --env production
+          pm2 reload ecosystem.config.cjs --env production || pm2 start ecosystem.config.cjs --env production
           pm2 save
 
       - name: Reload Nginx
