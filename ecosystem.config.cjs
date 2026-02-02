@@ -5,7 +5,7 @@ module.exports = {
   apps: [
     {
       name: 'api',
-      cwd: './server',
+      cwd: './server/src',
       script: 'index.js',
       instances: "max",
       exec_mode: 'cluster',
