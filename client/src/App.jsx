@@ -32,7 +32,7 @@ function App() {
   return (
     <div className="page">
       <header className="hero">
-        <span className="hero-badge">Fullstack</span>
+        <span className="hero-badge">Fullstack Deploy</span>
         <h1 className="hero-title">
           <span className="hero-title-line">Modern</span>
           <span className="hero-title-line hero-title-accent">Deploy</span>
