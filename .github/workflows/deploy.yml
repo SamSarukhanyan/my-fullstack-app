@@ -65,4 +65,5 @@ jobs:
       - name: Restart PM2
         run: |
           cd /home/sam/app
-          pm2 restart ecosystem.config.cjs --env production
+          pm2 reload ecosystem.config.cjs --env production
+ 
