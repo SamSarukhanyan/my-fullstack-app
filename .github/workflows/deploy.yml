@@ -53,22 +53,23 @@ jobs:
           sudo chown -R sam:sam /home/sam/app/server
           sudo chmod -R 755 /home/sam/app/server
 
+      - name: Deploy ecosystem config to app root
+        run: |
+          sudo cp ecosystem.config.cjs /home/sam/app/
+          sudo chown sam:sam /home/sam/app/ecosystem.config.cjs
+
       - name: Write backend .env from secrets
         run: |
-          sudo tee /home/sam/app/server/.env > /dev/null <<EOF
-          PORT=${{ secrets.PORT }}
-          NODE_ENV=${{ secrets.NODE_ENV }}
-          API_KEY=${{ secrets.API_KEY }}
-          DB_HOST=${{ secrets.DB_HOST }}
-          DB_USER=${{ secrets.DB_USER }}
-          DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
-          DB_NAME=${{ secrets.DB_NAME }}
-<<<<<<< HEAD
-          JWT_SECRET="${{ secrets.JWT_SECRET }}"
-=======
-          JWT_SECRET=${{ secrets.JWT_SECRET }}
->>>>>>> 2c96914 (feat: enhance deployment workflow and improve dark theme styling)
-          EOF
+          sudo bash -c 'printf "%s\n" \
+            "PORT=${{ secrets.PORT }}" \
+            "NODE_ENV=${{ secrets.NODE_ENV }}" \
+            "API_KEY=${{ secrets.API_KEY }}" \
+            "DB_HOST=${{ secrets.DB_HOST }}" \
+            "DB_USER=${{ secrets.DB_USER }}" \
+            "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
+            "DB_NAME=${{ secrets.DB_NAME }}" \
+            "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
+            > /home/sam/app/server/.env'
           sudo chown sam:sam /home/sam/app/server/.env
           sudo chmod 600 /home/sam/app/server/.env
 
@@ -79,8 +80,4 @@ jobs:
           pm2 save
 
       - name: Reload Nginx
-<<<<<<< HEAD
         run: sudo nginx -t && sudo systemctl reload nginx
-=======
-        run: sudo nginx -t && sudo systemctl reload nginx
->>>>>>> 2c96914 (feat: enhance deployment workflow and improve dark theme styling)
