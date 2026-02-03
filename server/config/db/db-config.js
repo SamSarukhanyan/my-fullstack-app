@@ -5,8 +5,13 @@ import { fileURLToPath } from "url";
 import { Sequelize } from "sequelize";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// Всегда грузим .env из корня server/, независимо от cwd
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+const envPath = process.env.ENV_PATH
+  ? path.isAbsolute(process.env.ENV_PATH)
+    ? process.env.ENV_PATH
+    : path.resolve(process.cwd(), process.env.ENV_PATH)
+  : path.resolve(__dirname, "../../.env");
+// Грузим .env с учетом ENV_PATH (например .env.test)
+dotenv.config({ path: envPath });
 
 const isTest = process.env.NODE_ENV === "test";
 const dbName = isTest ? process.env.DB_NAME_TEST : process.env.DB_NAME;
