@@ -1,7 +1,13 @@
 const path = require("path");
 const dotenv = require("dotenv");
 
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+const envPath = process.env.ENV_PATH
+  ? path.isAbsolute(process.env.ENV_PATH)
+    ? process.env.ENV_PATH
+    : path.resolve(process.cwd(), process.env.ENV_PATH)
+  : path.resolve(__dirname, "../../.env");
+
+dotenv.config({ path: envPath });
 
 const base = {
   username: process.env.DB_USER,

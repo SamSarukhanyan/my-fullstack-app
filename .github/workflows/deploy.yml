@@ -49,6 +49,7 @@ jobs:
           sudo rm -rf /home/sam/app/server/*
           sudo mkdir -p /home/sam/app/server
           sudo cp -r server/* /home/sam/app/server/
+          sudo cp server/.sequelizerc /home/sam/app/server/.sequelizerc
           sudo cp -r server/node_modules /home/sam/app/server/
           sudo chown -R sam:sam /home/sam/app/server
           sudo chmod -R 755 /home/sam/app/server
