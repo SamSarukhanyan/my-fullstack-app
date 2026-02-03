@@ -69,12 +69,19 @@ jobs:
             "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
             "DB_NAME=${{ secrets.DB_NAME }}" \
             "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
+            "LOG_LEVEL=${{ secrets.LOG_LEVEL }}" \
+            "LOG_PATH=/home/sam/logs/api.json" \
             > /home/sam/app/server/.env'
           sudo chown sam:sam /home/sam/app/server/.env
           sudo chmod 600 /home/sam/app/server/.env
 
       - name: Ensure PM2 logs directory exists
         run: sudo mkdir -p /home/sam/logs && sudo chown sam:sam /home/sam/logs
+
+      - name: Run database migrations
+        run: |
+          cd /home/sam/app/server
+          npx sequelize-cli db:migrate
 
       - name: Restart PM2
         env:

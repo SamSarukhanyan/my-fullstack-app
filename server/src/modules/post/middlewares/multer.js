@@ -17,9 +17,11 @@ import { AppError } from "#utils/appError.js";
  * Disk storage configuration
  * Files are saved to "uploads/posts" directory
  */
+const uploadsDir = path.resolve(process.cwd(), "uploads/posts");
+
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, "uploads/posts");
+    cb(null, uploadsDir);
   },
 
   /**

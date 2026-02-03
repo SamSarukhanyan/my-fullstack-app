@@ -1,4 +1,5 @@
 //// src/middlewares/error.middleware.js
+import { logger } from "#utils/logger.js";
 export const errorMiddleware = (err, req, res, next) => {
   // defaults
   err.statusCode = err.statusCode || 500;
@@ -12,10 +13,14 @@ export const errorMiddleware = (err, req, res, next) => {
   }
 
   // Unexpected / programming error
-  console.error("UNEXPECTED ERROR:", err);
-  console.error("Error stack:", err.stack);
-  console.error("Request URL:", req.url);
-  console.error("Request method:", req.method);
+  logger.error(
+    {
+      err,
+      url: req.url,
+      method: req.method,
+    },
+    "Unexpected error"
+  );
 
   return res.status(500).json({
     ok: false,

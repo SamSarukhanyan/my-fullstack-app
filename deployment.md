@@ -199,6 +199,63 @@ app.listen(PORT, () => {
 });
 ```
 
+### 5.3 Миграции БД (вместо sync)
+
+Используем `sequelize-cli`. На проде выполняйте миграции перед перезапуском PM2:
+
+```bash
+cd /home/sam/app/server
+npx sequelize-cli db:migrate
+```
+
+### 5.4 Логирование (Pino JSON)
+
+Сервер пишет логи в JSON‑формате в файл `LOG_PATH`, по умолчанию `/home/sam/logs/api.json`.
+
+Пример в `.env`:
+
+```
+LOG_LEVEL=info
+LOG_PATH=/home/sam/logs/api.json
+```
+
+### 5.5 Ротация логов (logrotate)
+
+1. Скопируйте конфиг:
+
+```bash
+sudo cp /home/sam/app/ops/logrotate-pino.conf /etc/logrotate.d/app-api
+```
+
+2. Проверка:
+
+```bash
+sudo logrotate -f /etc/logrotate.d/app-api
+```
+
+### 5.6 PM2 logrotate (stdout/stderr)
+
+Для стандартных PM2 логов:
+
+```bash
+pm2 install pm2-logrotate
+pm2 set pm2-logrotate:retain 14
+pm2 set pm2-logrotate:compress true
+```
+
+### 5.7 Тесты (Vitest + Supertest)
+
+1. Создайте тестовую БД (например `app_test`).
+2. Создайте файл `server/.env.test` (пример в `server/.env.test.example`).
+3. Запуск локально:
+
+```bash
+cd /home/sam/app/server
+npm test
+```
+
+Тесты автоматически выполняют миграции перед запуском.
+
 Если статику отдаёт Nginx, закомментируйте блок с `express.static` и fallback `app.get('*', ...)` и настраивайте Nginx на `client/dist`.
 
 ---

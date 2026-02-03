@@ -5,6 +5,20 @@ import { Op } from "sequelize";
 import fs from "fs";
 import path from "path";
 
+function normalizeAvatarPath(filePath) {
+  let relative = path.isAbsolute(filePath)
+    ? path.relative(process.cwd(), filePath)
+    : filePath;
+
+  relative = relative.split(path.sep).join("/");
+
+  if (!relative.startsWith("uploads/avatars/")) {
+    throw new AppError("Invalid avatar path", 400);
+  }
+
+  return relative;
+}
+
 export class AccountService {
   constructor(User, Follow, Post, sequelize) {
     this.User = User;
@@ -246,21 +260,23 @@ export class AccountService {
     const user = await this.User.findByPk(userId);
     if (!user) throw new AppError("User not found", 404);
 
+    const safeRelativePath = normalizeAvatarPath(filePath);
+
     // Delete old avatar if it exists
     if (user.picture_url) {
-      // Handle both relative paths (uploads/avatars/filename.jpg) and absolute paths
       let oldFilePath = user.picture_url;
-      if (!path.isAbsolute(oldFilePath)) {
-        // Already relative, use as is
-        oldFilePath = user.picture_url;
-      } else {
-        // Absolute path, extract relative part
-        oldFilePath = path.relative(process.cwd(), oldFilePath);
+      try {
+        oldFilePath = normalizeAvatarPath(oldFilePath);
+      } catch (err) {
+        oldFilePath = null;
       }
       
       try {
-        if (fs.existsSync(oldFilePath)) {
-          fs.unlinkSync(oldFilePath);
+        if (oldFilePath) {
+          const absOld = path.resolve(process.cwd(), oldFilePath);
+          if (fs.existsSync(absOld)) {
+            fs.unlinkSync(absOld);
+          }
         }
       } catch (error) {
         // Log error but don't fail the upload
@@ -270,7 +286,7 @@ export class AccountService {
 
     // Update user with new avatar path
     // Store relative path: "uploads/avatars/filename.jpg"
-    user.picture_url = filePath;
+    user.picture_url = safeRelativePath;
     await user.save();
 
     const { password: _, ...safeUser } = user.toJSON();
@@ -288,19 +304,19 @@ export class AccountService {
 
     // Delete avatar file if it exists
     if (user.picture_url) {
-      // Handle both relative paths (uploads/avatars/filename.jpg) and absolute paths
       let filePath = user.picture_url;
-      if (!path.isAbsolute(filePath)) {
-        // Already relative, use as is
-        filePath = user.picture_url;
-      } else {
-        // Absolute path, extract relative part
-        filePath = path.relative(process.cwd(), filePath);
+      try {
+        filePath = normalizeAvatarPath(filePath);
+      } catch (err) {
+        filePath = null;
       }
       
       try {
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
+        if (filePath) {
+          const absPath = path.resolve(process.cwd(), filePath);
+          if (fs.existsSync(absPath)) {
+            fs.unlinkSync(absPath);
+          }
         }
       } catch (error) {
         // Log error but don't fail the deletion

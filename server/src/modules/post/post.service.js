@@ -1,5 +1,6 @@
 import { AppError } from "#utils/appError.js";
 import { Op } from "sequelize";
+import fs from "fs/promises";
 
 //post.service.js
 export class PostService {
@@ -22,6 +23,22 @@ export class PostService {
   }
 
   async getPosts(userId, currUserId = null) {
+    const targetUser = await this.User.findByPk(userId, {
+      attributes: ["id", "isPrivate"],
+    });
+    if (!targetUser) throw new AppError("User not found", 404);
+
+    if (targetUser.isPrivate && currUserId && userId !== currUserId) {
+      const follow = await this.Follow.findOne({
+        where: {
+          followerId: currUserId,
+          followingId: userId,
+          status: "followed",
+        },
+      });
+      if (!follow) throw new AppError("You cannot view this user's posts", 403);
+    }
+
     const posts = await this.Post.findAll({
       where: { userId },
       include: [
