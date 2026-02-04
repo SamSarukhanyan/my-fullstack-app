@@ -22,7 +22,6 @@ jobs:
           --health-interval=5s
           --health-timeout=5s
           --health-retries=20
-          --log-error-verbosity=1
 
     steps:
       - name: Checkout repository
