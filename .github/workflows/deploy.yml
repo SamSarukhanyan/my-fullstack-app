@@ -90,9 +90,6 @@ jobs:
           sudo cp ecosystem.config.cjs /home/sam/app/
           sudo chown sam:sam /home/sam/app/ecosystem.config.cjs
 
-      - name: Ensure PM2 logs directory exists
-        run: sudo mkdir -p /home/sam/logs && sudo chown sam:sam /home/sam/logs
-
       - name: Run database migrations
         run: |
           cd /home/sam/app/server
