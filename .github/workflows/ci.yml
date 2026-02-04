@@ -34,7 +34,7 @@ jobs:
 
       - name: Install server dependencies
         working-directory: server
-        run: npm ci
+        run: npm ci --loglevel error
 
       - name: Write test env file
         working-directory: server
@@ -47,8 +47,11 @@ jobs:
             "DB_NAME_TEST=app_test" \
             "JWT_SECRET=ci_test_secret" \
             "LOG_LEVEL=warn" \
+            "DOTENV_CONFIG_QUIET=true" \
             > .env.test
 
       - name: Run server tests
         working-directory: server
+        env:
+          DOTENV_CONFIG_QUIET: "true"
         run: npm test
