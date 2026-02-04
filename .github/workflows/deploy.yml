@@ -4,14 +4,28 @@ on:
   push:
     branches: [main]
 
+# При новом push отменяем предыдущий деплой — на сервере всегда окажется код последнего коммита
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: self-hosted
     environment: production
 
     steps:
-      - name: Checkout repository
+      # Всегда клонируем ровно тот коммит, который только что запушен
+      - name: Checkout repository (exact commit from this push)
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Record deploy (this commit → server)
+        run: |
+          echo "Deploying commit ${{ github.sha }} (branch ${{ github.ref_name }})"
+          echo "Message: ${{ github.event.head_commit.message }}"
+          echo "→ Server will get this exact code."
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -49,6 +63,7 @@ jobs:
           sudo rm -rf /home/sam/app/server/*
           sudo mkdir -p /home/sam/app/server
           sudo cp -r server/* /home/sam/app/server/
+          sudo cp server/.sequelizerc /home/sam/app/server/.sequelizerc 2>/dev/null || true
           sudo cp -r server/node_modules /home/sam/app/server/
           sudo chown -R sam:sam /home/sam/app/server
           sudo chmod -R 755 /home/sam/app/server
@@ -64,6 +79,7 @@ jobs:
           DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
           DB_NAME=${{ secrets.DB_NAME }}
           JWT_SECRET="${{ secrets.JWT_SECRET }}"
+          LOG_LEVEL=${{ secrets.LOG_LEVEL }}
           EOF
           sudo chown sam:sam /home/sam/app/server/.env
           sudo chmod 600 /home/sam/app/server/.env
@@ -74,10 +90,21 @@ jobs:
           sudo cp ecosystem.config.cjs /home/sam/app/
           sudo chown sam:sam /home/sam/app/ecosystem.config.cjs
 
+      - name: Ensure PM2 logs directory exists
+        run: sudo mkdir -p /home/sam/logs && sudo chown sam:sam /home/sam/logs
+
+      - name: Run database migrations
+        run: |
+          cd /home/sam/app/server
+          npx sequelize-cli db:migrate
+
       - name: Restart PM2
+        env:
+          PORT: ${{ secrets.PORT }}
+          NODE_ENV: ${{ secrets.NODE_ENV }}
         run: |
           cd /home/sam/app
-          pm2 reload ecosystem.config.cjs --env production
+          pm2 reload ecosystem.config.cjs --env production || pm2 start ecosystem.config.cjs --env production
           pm2 save
 
       - name: Reload Nginx
