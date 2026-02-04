@@ -568,6 +568,48 @@ sam ALL=(ALL) NOPASSWD: /usr/bin/systemctl reload nginx
 
 ---
 
+## Часть 10.1 Устранение ошибки «API is not healthy»
+
+Если на фронтенде отображается **«API is not healthy»** или **«Failed to reach API»**, проверьте по шагам:
+
+1. **Порт Nginx и приложения совпадают**  
+   В конфиге Nginx (`/etc/nginx/sites-available/app`) должно быть:
+   ```nginx
+   location /api {
+       proxy_pass http://127.0.0.1:4004;
+       ...
+   }
+   ```
+   Порт **4004** должен совпадать с переменной **PORT** в GitHub Environment (и в `server/.env`). Если в секретах указан другой порт (например 3000), измените в Nginx `proxy_pass` на тот же порт.
+
+2. **API запущен под PM2**  
+   На сервере выполните:
+   ```bash
+   pm2 list
+   pm2 logs api
+   ```
+   Процесс `api` должен быть в статусе `online`. Если его нет или он в `errored`, выполните из `/home/sam/app`:
+   ```bash
+   pm2 start ecosystem.config.cjs --env production
+   pm2 save
+   ```
+
+3. **Проверка health с сервера**  
+   С сервера (где крутится приложение):
+   ```bash
+   curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:4004/api/health
+   ```
+   Ожидается ответ **200**. Если 502/connection refused — бэкенд не слушает порт или упал.
+
+4. **Переменная для фронта (если задаёте)**  
+   Если в сборке задаёте `VITE_REACT_APP_API_URL`, указывайте **полный базовый путь к API с `/api`**, например:
+   - `https://yourdomain.com/api`  
+   Не указывайте только `https://yourdomain.com` — тогда запрос уйдёт на `/health` вместо `/api/health`.
+
+После правок: пересоберите и задеплойте фронт, перезапустите PM2 и при необходимости выполните `sudo nginx -t && sudo systemctl reload nginx`.
+
+---
+
 ## Часть 11. Чеклист перед продакшеном
 
 - [ ] Elastic IP привязан к инстансу.
