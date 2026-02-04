@@ -46,6 +46,7 @@ jobs:
             "DB_PASSWORD_TEST=root" \
             "DB_NAME_TEST=app_test" \
             "JWT_SECRET=ci_test_secret" \
+            "LOG_LEVEL=warn" \
             > .env.test
 
       - name: Run server tests
