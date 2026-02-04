@@ -123,5 +123,23 @@ jobs:
             echo "Attempt $i: API not ready, retry in 3s..."
             sleep 3
           done
-          echo "API did not become healthy after 30s. Check: pm2 logs api; sudo tail -50 /var/log/nginx/error.log"
+          echo "--- Last curl attempt (verbose) ---"
+          curl -v --connect-timeout 5 "$url" || true
+          echo ""
+          echo "--- PM2 process list ---"
+          pm2 list || true
+          echo "--- PM2 logs (last 100 lines) ---"
+          pm2 logs api --lines 100 --nostream 2>&1 || true
+          echo "--- Nginx error log (last 30 lines) ---"
+          sudo tail -30 /var/log/nginx/error.log 2>/dev/null || true
           exit 1
+
+      - name: Show PM2 and Nginx logs on failure
+        if: failure()
+        run: |
+          echo "=== PM2 list ==="
+          pm2 list || true
+          echo "=== PM2 logs api (last 150 lines) ==="
+          pm2 logs api --lines 150 --nostream 2>&1 || true
+          echo "=== Nginx error log (last 50 lines) ==="
+          sudo tail -50 /var/log/nginx/error.log 2>/dev/null || true
