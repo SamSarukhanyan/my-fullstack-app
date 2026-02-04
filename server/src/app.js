@@ -95,7 +95,8 @@ fs.mkdirSync(path.join(uploadsDir, "avatars"), { recursive: true });
 const clientDistPath = path.resolve(__dirname, "../../client/dist");
 if (fs.existsSync(clientDistPath)) {
   app.use(express.static(clientDistPath));
-  app.get("*", (req, res) => {
+  // Express 5: "*" не поддерживается, используем именованный wildcard /{*path}
+  app.get("/{*path}", (req, res) => {
     if (req.path.startsWith("/api")) {
       return res.status(404).send("API route not found");
     }
