@@ -50,7 +50,7 @@ app.use(generalLimiter);
 app.use(cors(corsOptions));
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
-app.get("/api/health", async (req, res) => {
+const healthPayload = async () => {
   let dbOk = false;
   try {
     await db.sequelize.authenticate();
@@ -58,11 +58,17 @@ app.get("/api/health", async (req, res) => {
   } catch (err) {
     dbOk = false;
   }
-  res.status(200).json({
-    status: "OK",
-    message: "Server is running",
-    db: dbOk,
-  });
+  return { status: "OK", message: "Server is running", db: dbOk };
+};
+
+// /api/health — когда Nginx передаёт путь как есть (proxy_pass без слэша в конце)
+app.get("/api/health", async (req, res) => {
+  res.status(200).json(await healthPayload());
+});
+
+// /health — когда Nginx режет префикс /api (proxy_pass со слэшем: 4004/)
+app.get("/health", async (req, res) => {
+  res.status(200).json(await healthPayload());
 });
 
 const apiRouter = express.Router();
