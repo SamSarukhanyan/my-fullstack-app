@@ -53,23 +53,33 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 const healthPayload = async () => {
   let dbOk = false;
   try {
-    await db.sequelize.authenticate();
+    if (db?.sequelize) await db.sequelize.authenticate();
     dbOk = true;
-  } catch (err) {
+  } catch {
     dbOk = false;
   }
   return { status: "OK", message: "Server is running", db: dbOk };
 };
 
+const sendHealth = async (req, res) => {
+  try {
+    const payload = await healthPayload();
+    return res.status(200).json(payload);
+  } catch (err) {
+    return res.status(200).json({
+      status: "OK",
+      message: "Server is running",
+      db: false,
+      healthError: err?.message || "unknown",
+    });
+  }
+};
+
 // /api/health — когда Nginx передаёт путь как есть (proxy_pass без слэша в конце)
-app.get("/api/health", async (req, res) => {
-  res.status(200).json(await healthPayload());
-});
+app.get("/api/health", sendHealth);
 
 // /health — когда Nginx режет префикс /api (proxy_pass со слэшем: 4004/)
-app.get("/health", async (req, res) => {
-  res.status(200).json(await healthPayload());
-});
+app.get("/health", sendHealth);
 
 const apiRouter = express.Router();
 loadRoutes(apiRouter);

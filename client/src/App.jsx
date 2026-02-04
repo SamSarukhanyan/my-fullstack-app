@@ -17,7 +17,7 @@ function App() {
       if (response.ok) {
         setApiStatus('✅ API is running');
       } else {
-        setApiStatus('❌ API is not healthy');
+        setApiStatus(`❌ API is not healthy (${response.status})`);
       }
     } catch (error) {
       setApiStatus('❌ Failed to reach API');
