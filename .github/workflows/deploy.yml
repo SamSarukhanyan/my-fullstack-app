@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
 
-# При новом push отменяем предыдущий деплой — на сервере всегда окажется код последнего коммита
 concurrency:
   group: deploy-production
   cancel-in-progress: true
@@ -15,7 +14,6 @@ jobs:
     environment: production
 
     steps:
-      # Всегда клонируем ровно тот коммит, который только что запушен
       - name: Checkout repository (exact commit from this push)
         uses: actions/checkout@v4
         with:
@@ -84,7 +82,6 @@ jobs:
           sudo chown sam:sam /home/sam/app/server/.env
           sudo chmod 600 /home/sam/app/server/.env
 
-      # Корень репозитория: ecosystem.config.cjs нужен для pm2 reload (рабочая директория — /home/sam/app)
       - name: Deploy root config (ecosystem.config.cjs)
         run: |
           sudo cp ecosystem.config.cjs /home/sam/app/
