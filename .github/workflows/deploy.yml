@@ -49,48 +49,35 @@ jobs:
           sudo rm -rf /home/sam/app/server/*
           sudo mkdir -p /home/sam/app/server
           sudo cp -r server/* /home/sam/app/server/
-          sudo cp server/.sequelizerc /home/sam/app/server/.sequelizerc
           sudo cp -r server/node_modules /home/sam/app/server/
           sudo chown -R sam:sam /home/sam/app/server
           sudo chmod -R 755 /home/sam/app/server
 
-      - name: Deploy ecosystem config to app root
+      - name: Write backend .env from secrets
+        run: |
+          sudo tee /home/sam/app/server/.env > /dev/null <<EOF
+          PORT=${{ secrets.PORT }}
+          NODE_ENV=${{ secrets.NODE_ENV }}
+          API_KEY=${{ secrets.API_KEY }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
+          DB_NAME=${{ secrets.DB_NAME }}
+          JWT_SECRET="${{ secrets.JWT_SECRET }}"
+          EOF
+          sudo chown sam:sam /home/sam/app/server/.env
+          sudo chmod 600 /home/sam/app/server/.env
+
+      # Корень репозитория: ecosystem.config.cjs нужен для pm2 reload (рабочая директория — /home/sam/app)
+      - name: Deploy root config (ecosystem.config.cjs)
         run: |
           sudo cp ecosystem.config.cjs /home/sam/app/
           sudo chown sam:sam /home/sam/app/ecosystem.config.cjs
 
-      - name: Write backend .env from secrets
-        run: |
-          sudo bash -c 'printf "%s\n" \
-            "PORT=${{ secrets.PORT }}" \
-            "NODE_ENV=${{ secrets.NODE_ENV }}" \
-            "API_KEY=${{ secrets.API_KEY }}" \
-            "DB_HOST=${{ secrets.DB_HOST }}" \
-            "DB_USER=${{ secrets.DB_USER }}" \
-            "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
-            "DB_NAME=${{ secrets.DB_NAME }}" \
-            "JWT_SECRET=${{ secrets.JWT_SECRET }}" \
-            "LOG_LEVEL=${{ secrets.LOG_LEVEL }}" \
-            "LOG_PATH=/home/sam/logs/api.json" \
-            > /home/sam/app/server/.env'
-          sudo chown sam:sam /home/sam/app/server/.env
-          sudo chmod 600 /home/sam/app/server/.env
-
-      - name: Ensure PM2 logs directory exists
-        run: sudo mkdir -p /home/sam/logs && sudo chown sam:sam /home/sam/logs
-
-      - name: Run database migrations
-        run: |
-          cd /home/sam/app/server
-          npx sequelize-cli db:migrate
-
       - name: Restart PM2
-        env:
-          PORT: ${{ secrets.PORT }}
-          NODE_ENV: ${{ secrets.NODE_ENV }}
         run: |
           cd /home/sam/app
-          pm2 reload ecosystem.config.cjs --env production || pm2 start ecosystem.config.cjs --env production
+          pm2 reload ecosystem.config.cjs --env production
           pm2 save
 
       - name: Reload Nginx
