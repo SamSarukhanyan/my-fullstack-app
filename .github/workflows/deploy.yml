@@ -30,20 +30,20 @@ jobs:
         with:
           node-version: '20'
 
-      # ---------- FRONTEND ----------
-      - name: Install client dependencies
+      # ---------- FRONTEND (web only: Vite client) ----------
+      - name: Install web dependencies
         working-directory: client
         run: npm ci
 
-      - name: Build React app
+      - name: Build web frontend
         working-directory: client
         run: npm run build
 
-      - name: Verify React build
+      - name: Verify web build
         run: |
-          test -f client/dist/index.html || (echo "❌ React build missing index.html" && exit 1)
+          test -f client/dist/index.html || (echo "❌ Vite web build missing index.html" && exit 1)
 
-      - name: Deploy frontend to nginx root
+      - name: Deploy frontend to nginx root (Vite web build)
         run: |
           sudo rm -rf /home/sam/app/client/dist
           sudo mkdir -p /home/sam/app/client
@@ -56,13 +56,23 @@ jobs:
         working-directory: server
         run: npm ci --omit=dev
 
-      - name: Deploy backend to server directory
+      - name: Deploy backend to server directory (preserve uploads)
         run: |
+          # Backup uploads so they are not removed by deploy (production-ready)
+          if [ -d /home/sam/app/server/uploads ]; then
+            sudo cp -a /home/sam/app/server/uploads /tmp/server_uploads_backup
+          fi
           sudo rm -rf /home/sam/app/server/*
           sudo mkdir -p /home/sam/app/server
           sudo cp -r server/* /home/sam/app/server/
           sudo cp server/.sequelizerc /home/sam/app/server/.sequelizerc 2>/dev/null || true
           sudo cp -r server/node_modules /home/sam/app/server/
+          # Restore uploads (avatars, post images) so user content is never lost
+          if [ -d /tmp/server_uploads_backup ]; then
+            sudo mv /tmp/server_uploads_backup /home/sam/app/server/uploads
+          else
+            sudo mkdir -p /home/sam/app/server/uploads/posts /home/sam/app/server/uploads/avatars
+          fi
           sudo chown -R sam:sam /home/sam/app/server
           sudo chmod -R 755 /home/sam/app/server
 

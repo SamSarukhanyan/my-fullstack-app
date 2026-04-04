@@ -1,4 +1,5 @@
 //account.service.js
+import { paths } from "#config/app.config.js";
 import { USER_PUBLIC_FIELDS } from "#modules/auth/constants/user.attributes.js";
 import { AppError } from "#utils/appError.js";
 import { Op } from "sequelize";
@@ -7,7 +8,7 @@ import path from "path";
 
 function normalizeAvatarPath(filePath) {
   let relative = path.isAbsolute(filePath)
-    ? path.relative(process.cwd(), filePath)
+    ? path.relative(paths.serverRoot, filePath)
     : filePath;
 
   relative = relative.split(path.sep).join("/");
@@ -273,13 +274,12 @@ export class AccountService {
       
       try {
         if (oldFilePath) {
-          const absOld = path.resolve(process.cwd(), oldFilePath);
+          const absOld = path.join(paths.serverRoot, oldFilePath);
           if (fs.existsSync(absOld)) {
             fs.unlinkSync(absOld);
           }
         }
       } catch (error) {
-        // Log error but don't fail the upload
         console.error("Error deleting old avatar:", error);
       }
     }
@@ -313,13 +313,12 @@ export class AccountService {
       
       try {
         if (filePath) {
-          const absPath = path.resolve(process.cwd(), filePath);
+          const absPath = path.join(paths.serverRoot, filePath);
           if (fs.existsSync(absPath)) {
             fs.unlinkSync(absPath);
           }
         }
       } catch (error) {
-        // Log error but don't fail the deletion
         console.error("Error deleting avatar file:", error);
       }
     }

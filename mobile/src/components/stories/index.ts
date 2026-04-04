@@ -1,0 +1,1 @@
+export { InstagramStoriesIntegration } from './InstagramStoriesIntegration';

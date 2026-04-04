@@ -1,0 +1,40 @@
+# Mobile app: optional manual validation only.
+# This workflow is NOT part of the main push-to-production deploy pipeline.
+# Run it manually only when you explicitly want to validate or build the mobile app.
+
+name: Mobile (Production)
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: mobile-production
+  cancel-in-progress: true
+
+jobs:
+  mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Create mobile/.env from GitHub Secret
+        run: |
+          mkdir -p mobile
+          echo "EXPO_PUBLIC_API_URL=${{ secrets.MOBILE_API_URL }}" > mobile/.env
+          echo "Wrote mobile/.env with EXPO_PUBLIC_API_URL from MOBILE_API_URL secret"
+
+      - name: Install mobile dependencies
+        working-directory: mobile
+        run: npm ci
+
+      - name: Validate Expo app (export)
+        working-directory: mobile
+        run: npx expo export
+        env:
+          EXPO_PUBLIC_API_URL: ${{ secrets.MOBILE_API_URL }}

@@ -1,6 +1,7 @@
 import { AppError } from "#utils/appError.js";
 import { Op } from "sequelize";
 import fs from "fs/promises";
+import path from "path";
 
 //post.service.js
 export class PostService {
@@ -81,12 +82,17 @@ export class PostService {
         ? likes.some((like) => like && like.userId === currUserId)
         : false;
       
+      const images = (plain.images || []).map((img) => ({
+        image_url: (img?.image_url || img?.imageUrl || '').replace(/\\/g, '/'),
+      }));
+      const author = { ...(plain.author || {}) };
+      if (author.picture_url) author.picture_url = String(author.picture_url).replace(/\\/g, '/');
       return {
         id: plain.id,
         title: plain.title || '',
         description: plain.description || '',
-        images: plain.images || [],
-        author: plain.author || {},
+        images,
+        author,
         liked: liked || false,
         likesCount: likes.length,
         commentsCount: comments.length,
@@ -106,7 +112,7 @@ export class PostService {
         if (files?.length) {
           const photos = files.map((f) => ({
             postId: post.id,
-            image_url: f.path,
+            image_url: path.join("uploads", "posts", path.basename(f.path)).replace(/\\/g, "/"),
           }));
           await this.PostImage.bulkCreate(photos, { transaction });
         }

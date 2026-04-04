@@ -22,8 +22,7 @@ export class AuthService {
   async createUser(user) {
     return this.sequelize.transaction(async (transaction) => {
       const createdUser = await this.userModel.create(user, { transaction });
-      const { password: _, ...safeUser } = createdUser.toJSON();
-      return safeUser;
+      return createdUser;
     });
   }
   async generateToken(user, password) {
@@ -31,6 +30,13 @@ export class AuthService {
     if (!isMatch) throw new AppError("Invalid password", 400);
 
     return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "20d",
+    });
+  }
+
+  /** Issue JWT for a user id (e.g. after signup; no password check). */
+  issueTokenForUserId(userId) {
+    return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
       expiresIn: "20d",
     });
   }

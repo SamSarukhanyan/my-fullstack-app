@@ -2,22 +2,14 @@
 import multer from "multer";
 import path from "path";
 import crypto from "crypto";
+import { paths } from "#config/app.config.js";
 import { AppError } from "#utils/appError.js";
 
 /**
  * Multer Configuration for Post Image Uploads
- * 
- * Field name: "photos" (must match frontend FormData)
- * Max files: 10
- * Max file size: 5MB per file
- * Allowed types: jpeg, jpg, png, gif
+ * Field name: "photos". Files saved to same dir as express.static("/uploads") so images are served.
  */
-
-/**
- * Disk storage configuration
- * Files are saved to "uploads/posts" directory
- */
-const uploadsDir = path.resolve(process.cwd(), "uploads/posts");
+const uploadsDir = path.join(paths.uploadsDir, "posts");
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {

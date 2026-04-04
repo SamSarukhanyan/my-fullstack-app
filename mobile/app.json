@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "My Fullstack App",
+    "slug": "my-fullstack-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.myfullstackapp.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.myfullstackapp.mobile"
+    },
+    "scheme": "myfullstackapp",
+    "extra": {
+      "apiUrl": ""
+    }
+  }
+}

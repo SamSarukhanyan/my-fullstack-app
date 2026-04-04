@@ -5,6 +5,7 @@
 # Окружение и секреты
 **/.env
 **/.env.local
+**/.env.test.example
 **/.env.*.local
 
 # Сборка и логи
@@ -26,3 +27,11 @@
 *.sublime-project
 *.sublime-workspace
 *.md
+!/.vscode/
+!/.vscode/settings.json
+
+# Local assistant / workspace metadata
+.codex/
+
+# Runtime user-generated files
+server/uploads/

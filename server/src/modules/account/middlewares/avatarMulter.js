@@ -2,22 +2,14 @@
 import multer from "multer";
 import path from "path";
 import crypto from "crypto";
+import { paths } from "#config/app.config.js";
 import { AppError } from "#utils/appError.js";
 
 /**
  * Multer Configuration for Avatar (Profile Picture) Uploads
- * 
- * Field name: "avatar" (must match frontend FormData)
- * Max files: 1 (single file)
- * Max file size: 5MB
- * Allowed types: jpeg, jpg, png, gif
+ * Field name: "avatar". Files saved to same dir as express.static("/uploads") so images are served.
  */
-
-/**
- * Disk storage configuration
- * Files are saved to "uploads/avatars" directory
- */
-const uploadsDir = path.resolve(process.cwd(), "uploads/avatars");
+const uploadsDir = path.join(paths.uploadsDir, "avatars");
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {

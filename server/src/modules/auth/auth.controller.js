@@ -4,8 +4,9 @@ export class AuthController {
   }
 
   async signup(req, res) {
-    const result = await this.service.createUser(req.body);
-    res.status(201).send({ ok: true, payload: result });
+    const createdUser = await this.service.createUser(req.body);
+    const token = this.service.issueTokenForUserId(createdUser.id);
+    res.status(201).send({ ok: true, payload: token });
   }
   async login(req, res) {
     const { password } = req.body;
