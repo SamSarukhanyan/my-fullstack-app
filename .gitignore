@@ -26,11 +26,11 @@
 **/.idea/
 *.sublime-project
 *.sublime-workspace
-!/.vscode/
-!/.vscode/settings.json
+*.md
+!/README.md
 
 # Local assistant / workspace metadata
-.codex/
+.codex
 
 # Runtime user-generated files
 server/uploads/
