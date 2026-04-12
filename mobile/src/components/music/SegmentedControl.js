@@ -15,13 +15,13 @@ import { triggerTabHaptic } from '../../utils/haptics';
 
 const INTERNAL_PADDING = 20;
 const ANIMATION_DURATION = 200;
-/** Внутренний отступ текста от краёв ячейки (слева и справа), чтобы не прилипал к активному фону. */
+/** Horizontal text padding inside a cell so it does not stick to the active background. */
 const LABEL_PADDING_H = 8;
 
 /**
- * Segmented control — переключатель вкладок с анимированным ползунком.
- * Синхронизируется с внешним pager (tap → страница, swipe → индикатор).
- * Если передан width — используется он (для frame mode); иначе useWindowDimensions.
+ * Segmented control with an animated slider.
+ * Syncs with an external pager (tap -> page, swipe -> indicator).
+ * If width is provided, it is used (for frame mode); otherwise useWindowDimensions is used.
  */
 export default function SegmentedControl({
   options,

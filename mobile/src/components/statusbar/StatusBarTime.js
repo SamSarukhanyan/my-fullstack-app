@@ -3,8 +3,8 @@ import { Text, StyleSheet } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 
 /**
- * Время в стиле верхнего статус-бара iPhone.
- * Только для режима рамки (frame mode). Цвет от темы: светлая тема — тёмный текст, тёмная — светлый.
+ * Time styled like the iPhone top status bar.
+ * Used only in frame mode. Color follows the theme: dark text for light theme, light text for dark theme.
  */
 export default function StatusBarTime() {
   const { theme, colors } = useTheme();

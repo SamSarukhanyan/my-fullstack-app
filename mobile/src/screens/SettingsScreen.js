@@ -33,16 +33,16 @@ const { width: FALLBACK_WIDTH } = Dimensions.get('window');
 const HEADER_HEIGHT = 48;
 const AVATAR_SIZE = 88;
 const DRAG_CLOSE_THRESHOLD = 80;
-/** Подложка смещена влево — край экрана в середине avatar. */
+/** Underlay is shifted left so the screen edge aligns with the avatar midpoint. */
 const UNDERLAY_OFFSET_LEFT_PX = 44;
 const UNDERLAY_FOLLOW_FACTOR = 0.28;
 const BOTTOM_SHEET_HEIGHT = 140;
-/** Отступ выбранного инпута над клавиатурой (px). */
+/** Offset of the selected input above the keyboard in px. */
 const INPUT_KEYBOARD_GAP_PX = 5;
 
 /**
- * Settings: открывается справа налево, закрытие свайпом вправо с синхронной подложкой (как Chat).
- * Поля: аватар (change picture → bottom sheet), name, surname, username, password, isPrivate.
+ * Settings opens from right to left, and closes with a right swipe plus a synced underlay (like Chat).
+ * Fields: avatar (change picture -> bottom sheet), name, surname, username, password, isPrivate.
  */
 export default function SettingsScreen({
   visible,

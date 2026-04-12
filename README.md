@@ -284,4 +284,3 @@ Contact
 If you would like to discuss this project, collaboration opportunities, or engineering roles, please use the contact information provided in my GitHub profile, CV, or LinkedIn.
 
 
-######

@@ -15,7 +15,7 @@ const R = (SIZE - STROKE_WIDTH) / 2;
 const CX = SIZE / 2;
 const CIRCLE_LENGTH = 2 * Math.PI * R;
 
-/** Голова (сплошной сегмент) + хвост (маленькие куски с вырезами): head gap piece gap piece... */
+/** Head (solid segment) plus tail (small cut segments): head gap piece gap piece... */
 const HEAD_LEN = CIRCLE_LENGTH * 0.4;
 const GAP_LEN = 5;
 const PIECE_LEN = 3;

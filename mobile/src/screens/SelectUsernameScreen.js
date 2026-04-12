@@ -20,8 +20,8 @@ import { useTheme } from '../context/ThemeContext';
 import { useViewport } from '../context/ViewportContext';
 
 /**
- * Figma: Select a Username (87-1221) — один в один с макетом.
- * Поля: 321×49 (по макету), radius 10px, заливка #F2F2F2, тонкая светлая обводка.
+ * Figma: Select a Username (87-1221) matches the design exactly.
+ * Fields: 321x49 (per design), 10px radius, #F2F2F2 fill, thin light border.
  */
 const INPUT_BG = '#F2F2F2';
 const TEAL = '#5A5CFF';

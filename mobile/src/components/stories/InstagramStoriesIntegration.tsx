@@ -1,12 +1,12 @@
 /**
- * Интеграция instagram-stories с проектом.
- * Маппинг наших users → формат Instagram и рендер без собственного списка аватаров (hideAvatarList).
- * Логику instagram-stories не изменяем.
+ * instagram-stories integration for this project.
+ * Maps our users into the Instagram format and renders without its own avatar list (hideAvatarList).
+ * The instagram-stories logic itself is left unchanged.
  */
 import React, { useMemo } from 'react';
 import InstagramStories from '../../instagram-stories';
 
-/** Наш формат пользователя (из HomeScreen / MainPagerScreen) */
+/** Our user format (from HomeScreen / MainPagerScreen). */
 interface OurStoryUser {
   id?: string | number;
   userName?: string;
@@ -17,10 +17,10 @@ interface OurStoryUser {
   timeAgo?: string;
 }
 
-/** Пустой URI для скелетонов — компоненты рендерят View вместо Image. */
+/** Empty URI for skeletons so components render a View instead of an Image. */
 const SKELETON_URI = '';
 
-/** Маппинг наших users в формат instagram-stories (скелетоны — без картинок и имён). */
+/** Map our users into the instagram-stories format (skeletons have no images or names). */
 function mapToInstagramStories(
   payload: OurStoryUser[] | null | undefined,
   initialUserIndex: number

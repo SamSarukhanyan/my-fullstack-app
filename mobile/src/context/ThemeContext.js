@@ -5,10 +5,10 @@ import { lightColors, darkColors } from '../theme';
 
 const ThemeContext = createContext(null);
 
-/** Время одного полного оборота лоадера (должно совпадать с CircularLoader duration); тема меняется только после этого. */
+/** Time for one full loader rotation (must match CircularLoader duration); the theme switches only after that. */
 const LOADER_FULL_CIRCLE_MS = 1000;
 
-/** Фон до загрузки темы: тёмный (#121212), чтобы не было белой вспышки при старте, если пользователь выбрал dark. */
+/** Background before the theme loads: dark (#121212) to avoid a white flash on startup when the user selected dark mode. */
 const LOADING_BG = darkColors.background;
 
 export function ThemeProvider({ children }) {

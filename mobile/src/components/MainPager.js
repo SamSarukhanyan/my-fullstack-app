@@ -20,13 +20,13 @@ const TAB_BAR_BOTTOM_PADDING = 12;
 const DARK_MAIN_PAGES_BG = '#0d1015';
 const LIGHT_MAIN_PAGES_BG = '#f5f5f5';
 const DARK_MAIN_GAP_BG = '#000000';
-// Дополнительная ширина страницы в режиме рамки,
-// чтобы красный бордер page совпадал с зелёным контейнером в DeviceFrameWrapper
+// Extra page width in frame mode
+// so the red page border matches the green container in DeviceFrameWrapper
 const FRAME_PAGE_EXTRA_WIDTH = 0;
 
 /**
- * Instagram-like horizontal pager. Страницы — ровно на всю ширину экрана.
- * Зазор — отдельные чёрные блоки между ними, при свайпе видна полоска.
+ * Instagram-like horizontal pager. Pages take up exactly the full screen width.
+ * The gap is rendered as separate black blocks between them, so a strip is visible while swiping.
  */
 export default function MainPager({
   renderHome,

@@ -23,11 +23,11 @@ const ICON_SIZE_CENTER = 26;
 
 const isIOS = Platform.OS === 'ios';
 
-/** Фиксированная высота таб-бара (контент), без insets. */
+/** Fixed tab bar content height, excluding insets. */
 export const TAB_BAR_FIXED_HEIGHT = TAB_BAR_HEIGHT;
 
 /**
- * Bottom tab bar: 5 вкладок. На iOS — нативный UIVisualEffectView blur (системные материалы).
+ * Bottom tab bar with 5 tabs. On iOS it uses native UIVisualEffectView blur (system materials).
  */
 export default function AnimatedTabBar({ pageWidth, onTabPress, currentIndex }) {
   const insets = useSafeAreaInsets();
@@ -40,7 +40,7 @@ export default function AnimatedTabBar({ pageWidth, onTabPress, currentIndex }) 
   const iconSize = isFrameMode ? frameModeStyles.tabBarIconSize : ICON_SIZE;
   const iconSizeCenter = isFrameMode ? frameModeStyles.tabBarIconSizeCenter : ICON_SIZE_CENTER;
 
-  // Масштаб для плавной анимации активной иконки
+  // Scale used for the smooth active-icon animation
   const scalesRef = useRef(
     TABS.map((_, i) => new Animated.Value(i === activeIndex ? 1.14 : 1))
   );
@@ -56,7 +56,7 @@ export default function AnimatedTabBar({ pageWidth, onTabPress, currentIndex }) 
     });
   }, [activeIndex]);
 
-  // iOS: нативные материалы размытия (как в таб-баре и Control Center)
+  // iOS: native blur materials (like the tab bar and Control Center)
   const blurTint = isIOS
     ? (theme === 'dark' ? 'systemThinMaterialDark' : 'systemThinMaterialLight')
     : theme === 'dark'

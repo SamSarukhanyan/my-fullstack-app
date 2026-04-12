@@ -2,7 +2,7 @@ import { Vibration, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
 /**
- * Короткий тактильный отклик при переключении табов (быстрый, лёгкий импульс).
+ * Short haptic feedback when switching tabs (quick, light pulse).
  */
 export function triggerTabHaptic() {
   if (Platform.OS === 'web') {

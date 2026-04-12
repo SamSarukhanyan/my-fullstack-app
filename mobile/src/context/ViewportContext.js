@@ -7,8 +7,8 @@ const defaultViewport = { width: win.width, height: win.height, isFrameMode: fal
 const ViewportContext = createContext(null);
 
 /**
- * Возвращает текущий viewport { width, height, isFrameMode }.
- * isFrameMode === true только когда приложение отображается в уменьшенном виде внутри рамки.
+ * Returns the current viewport { width, height, isFrameMode }.
+ * isFrameMode === true only when the app is displayed in a reduced view inside the frame.
  */
 export function useViewport() {
   const viewport = useContext(ViewportContext);

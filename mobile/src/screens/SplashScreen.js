@@ -7,7 +7,7 @@ import { useViewport } from '../context/ViewportContext';
 /**
  * Figma: SPLASH (87:9)
  * No status bar image (time/battery/antennas removed per request).
- * Нижний блок — фиксированная высота (как на Onboarding02, Phone, Verification).
+ * Bottom block has a fixed height (same as Onboarding02, Phone, Verification).
  */
 const DARK_BG = '#0d1015';
 const DARK_PANEL = '#141a22';

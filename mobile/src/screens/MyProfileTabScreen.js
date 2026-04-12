@@ -29,8 +29,8 @@ const GRID_ROWS = 3;
 
 
 /**
- * Контент последней вкладки (My Profile): листаешь до неё, отступ между 4-й и 5-й страницей.
- * Шапка (назад | My Profile | Settings), профиль, Edit Profile, статистика, сетка постов.
+ * Content of the last tab (My Profile): swipe to it, with a gap between the 4th and 5th pages.
+ * Header (back | My Profile | Settings), profile, Edit Profile, stats, post grid.
  */
 export default function MyProfileTabScreen({ onBack, onOpenSettings }) {
   const insets = useSafeAreaInsets();

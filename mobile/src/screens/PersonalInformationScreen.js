@@ -21,7 +21,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useViewport } from '../context/ViewportContext';
 
 /**
- * Personal Information (87-1193). Только поля ввода — фон #F2F2F2. Экран — белый.
+ * Personal Information (87-1193). Only the input fields use #F2F2F2 background. The screen itself is white.
  */
 const INPUT_BG = '#F2F2F2';
 const TEAL = '#5A5CFF';

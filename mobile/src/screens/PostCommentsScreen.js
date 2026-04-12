@@ -20,7 +20,7 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { getRefreshSpinnerColor } from '../theme';
 
-// По скриншоту: отступы 15–20px, аватар комментария ~30–35px, шрифты 12/14
+// According to the screenshot: 15-20 px spacing, comment avatar about 30-35 px, fonts 12/14
 const SCREEN_PADDING_H = 16;
 const COMMENT_AVATAR_SIZE = 32;
 const COMMENT_SPACING = 16;
@@ -33,8 +33,8 @@ function getCommentAuthorName(author) {
 }
 
 /**
- * Экран комментариев: шапка (назад | Comment), сверху тот же блок поста что на ленте,
- * ниже — список комментариев (аватар, имя, время, текст, лайки).
+ * Comments screen: header (back | Comment), the same post block as in the feed at the top,
+ * and below it a comments list (avatar, name, time, text, likes).
  */
 export default function PostCommentsScreen({ visible, post: initialPost, onClose }) {
   const insets = useSafeAreaInsets();
@@ -91,7 +91,7 @@ export default function PostCommentsScreen({ visible, post: initialPost, onClose
       onRequestClose={onClose}
     >
       <View style={[styles.root, { paddingTop: insets.top, backgroundColor: colors.background }]}>
-        {/* Шапка: назад | Comment — по скриншоту ~48px, белый фон */}
+        {/* Header: back | Comment, about 48 px by the screenshot, white background */}
         <View style={[styles.header, { height: headerHeight }]}>
           <TouchableOpacity
             style={styles.headerBtn}
@@ -118,7 +118,7 @@ export default function PostCommentsScreen({ visible, post: initialPost, onClose
             showsVerticalScrollIndicator={true}
             keyboardShouldPersistTaps="handled"
           >
-            {/* Верхний контент — тот же блок поста, что на главной */}
+            {/* Top content: the same post block as on the main feed */}
             {post && (
               <View style={styles.postWrap}>
                 <PostBlock
@@ -130,7 +130,7 @@ export default function PostCommentsScreen({ visible, post: initialPost, onClose
               </View>
             )}
 
-            {/* Список комментариев: аватар, имя + время, текст, лайки */}
+            {/* Comments list: avatar, name + time, text, likes */}
             <View style={styles.commentsList}>
               {comments.length === 0 && post && !loading && (
                 <Text style={styles.noComments}>No comments yet</Text>

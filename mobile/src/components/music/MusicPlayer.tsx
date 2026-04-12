@@ -11,7 +11,7 @@ import { frameModeStyles } from '../DeviceFrameWrapper';
 
 const SLIDE_DURATION_MS = 260;
 const PLAYER_HEIGHT_EST = 70;
-/** Фиксированный отступ для открытия: не зависим от onLayout, чтобы не было дёргания при первом измерении. */
+/** Fixed opening offset: independent from onLayout so there is no jump on the first measurement. */
 const SLIDE_OFFSET_OPEN = 120;
 
 type MusicPlayerProps = {

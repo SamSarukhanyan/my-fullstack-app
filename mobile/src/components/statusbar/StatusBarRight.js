@@ -16,8 +16,8 @@ const BATTERY_CAP_GAP = 2;
 const BATTERY_CAP_RADIUS = 2;
 
 /**
- * Правая часть статус-бара iPhone: антенна (4 столбца), 5G, батарея с процентом.
- * Только для режима рамки. Цвета от темы: светлая — тёмные иконки, тёмная — светлые.
+ * Right side of the iPhone status bar: signal (4 bars), 5G, and battery with percentage.
+ * Used only in frame mode. Colors follow the theme: dark icons on light theme, light icons on dark theme.
  */
 export default function StatusBarRight({ batteryPercent = 83 }) {
   const { colors, theme } = useTheme();
@@ -30,7 +30,7 @@ export default function StatusBarRight({ batteryPercent = 83 }) {
 
   return (
     <View style={styles.row}>
-      {/* Сигнал — 4 столбца с уклоном вправо, как на iPhone */}
+      {/* Signal: 4 bars leaning to the right, like on iPhone */}
       <View style={styles.signalWrap}>
         {BAR_HEIGHTS.map((h, i) => (
           <View
@@ -52,7 +52,7 @@ export default function StatusBarRight({ batteryPercent = 83 }) {
       {/* 5G */}
       <Text style={[styles.cellularLabel, { color }]}>5G</Text>
 
-      {/* Батарея: заливка белым = ровно clampedPercent% от ширины блока (математически). */}
+      {/* Battery: white fill equals exactly clampedPercent% of the block width. */}
       <View style={styles.batteryWrap}>
         <View style={[styles.batteryBody, { backgroundColor: batteryBg }]}>
           <View style={styles.batteryFillTrack} pointerEvents="none">
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
 
 
   },
-  /** Полная ширина блока (left–right) — от неё считается процент заливки. */
+  /** Total block width (left to right); the fill percentage is calculated from it. */
   batteryFillTrack: {
     position: 'absolute',
     left: 0,

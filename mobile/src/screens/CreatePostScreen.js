@@ -29,14 +29,14 @@ import { useViewport } from '../context/ViewportContext';
 import { frameModeStyles } from '../components/DeviceFrameWrapper';
 import GradientButton from '../components/GradientButton';
 
-/** Порог движения пальца (px): горизонтальный свайп — инпут не фокусируем. */
+/** Finger movement threshold in px: during a horizontal swipe, do not focus the input. */
 const SWIPE_THRESHOLD_PX = 14;
-/** Порог тяги вниз (px): вертикальный рефреш — инпут не фокусируем, клавиатура не открываем. */
+/** Pull-down threshold in px: during vertical refresh, do not focus the input or open the keyboard. */
 const PULL_DOWN_THRESHOLD_PX = 14;
 
 /**
- * Обёртка над TextInput: при касании во время горизонтального свайпа или вертикального
- * pull-to-refresh не открывает клавиатуру; фокус только при явном тапе.
+ * Wrapper around TextInput: if touched during a horizontal swipe or vertical
+ * pull-to-refresh, it does not open the keyboard; focus happens only on an explicit tap.
  */
 function SwipeAwareInput({ style, ...textInputProps }) {
   const inputRef = useRef(null);
@@ -99,8 +99,8 @@ const SECTION_MARGIN_BOTTOM = 16;
 const MAX_PHOTOS = 10;
 
 /**
- * Экран создания поста (Post): шапка (назад | Post), Select Image(s), Add caption, Add hashtags, Upload.
- * По макету Figma: 375×812, белый фон, единые отступы, кнопка Upload — teal.
+ * Post creation screen: header (back | Post), Select Image(s), Add caption, Add hashtags, Upload.
+ * Based on the Figma design: 375x812, white background, consistent spacing, teal Upload button.
  */
 export default function CreatePostScreen({ onBack }) {
   const insets = useSafeAreaInsets();
@@ -130,7 +130,7 @@ export default function CreatePostScreen({ onBack }) {
   const pickImages = useCallback(async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Доступ к медиа', 'Разрешите доступ к галерее, чтобы выбрать фото или видео.');
+      Alert.alert('Media access', 'Allow gallery access to select a photo or video.');
       return;
     }
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -154,14 +154,14 @@ export default function CreatePostScreen({ onBack }) {
 
   const uploadPost = useCallback(async () => {
     if (!token) {
-      Alert.alert('Вход', 'Войдите в аккаунт, чтобы публиковать посты.');
+      Alert.alert('Sign in', 'Sign in to your account to publish posts.');
       return;
     }
     const title = (caption || '').trim() || ' ';
     const description = (hashtags || '').trim() || '';
 
     if (images.length === 0) {
-      Alert.alert('Выберите медиа', 'Добавьте хотя бы одно изображение или видео.');
+      Alert.alert('Select media', 'Add at least one image or video.');
       return;
     }
 
@@ -184,7 +184,7 @@ export default function CreatePostScreen({ onBack }) {
       const res = await apiFetchWithAuthFormData(POSTS.create, token, formData, { timeoutMs: 60000 });
       if (!res.ok) {
         const errText = await res.text();
-        Alert.alert('Ошибка', errText || 'Не удалось опубликовать пост.');
+        Alert.alert('Error', errText || 'Failed to publish the post.');
         return;
       }
       setImages([]);
@@ -192,7 +192,7 @@ export default function CreatePostScreen({ onBack }) {
       setHashtags('');
       if (typeof onBack === 'function') onBack();
     } catch (e) {
-      Alert.alert('Ошибка', e?.message || 'Не удалось опубликовать пост.');
+      Alert.alert('Error', e?.message || 'Failed to publish the post.');
     } finally {
       setUploading(false);
     }

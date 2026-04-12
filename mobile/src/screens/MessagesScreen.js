@@ -17,7 +17,7 @@ import { useTheme } from '../context/ThemeContext';
 import { getRefreshSpinnerColor } from '../theme';
 import { useViewport } from '../context/ViewportContext';
 import { frameModeStyles } from '../components/DeviceFrameWrapper';
-// Стили как в NotificationsScreen: header 48, padding 16, avatar 44
+// Styles match NotificationsScreen: header 48, padding 16, avatar 44
 const HEADER_HEIGHT = 48;
 const CONTENT_PADDING_H = 16;
 const SEARCH_HEIGHT = 44;
@@ -30,8 +30,8 @@ const FREQUENT_CHATS_COUNT = 4;
 const ALL_MESSAGES_COUNT = 7;
 
 /**
- * Chat List (Chats): по скриншоту — шапка (назад | Chats), поиск, Frequently chatted, All Messages.
- * Размеры согласованы с NotificationsScreen (header 48, padding 16, avatar 44).
+ * Chat List (Chats): according to the screenshot it includes the header (back | Chats), search, Frequently chatted, All Messages.
+ * Dimensions are aligned with NotificationsScreen (header 48, padding 16, avatar 44).
  */
 export default function MessagesScreen({ onBack, onOpenChat, onOpenUserProfile }) {
   const insets = useSafeAreaInsets();

@@ -7,8 +7,8 @@ import { useViewport } from '../context/ViewportContext';
 
 /**
  * Figma: WELCOME (87-1292).
- * Круг 183×183 (#F2F2F2), top 164, по центру. Текст Welcome. Кнопка Continue 321×49, radius 10, #5A5CFF.
- * Без статус-бара. Нижний блок — FixedBottomBar.
+ * Circle 183x183 (#F2F2F2), top 164, centered. Welcome text. Continue button 321x49, radius 10, #5A5CFF.
+ * No status bar. Bottom block uses FixedBottomBar.
  */
 const DARK_BG = '#0d1015';
 const DARK_PANEL = '#151c26';

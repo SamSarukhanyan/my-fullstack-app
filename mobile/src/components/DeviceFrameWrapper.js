@@ -20,27 +20,27 @@ const FRAME_IMAGE = require('../../assets/ramka.png');
 const MARGIN = 10;
 const INSET = 32;
 const BEZEL_COLOR = '#141A22';
-/** Доп. высота рамки и контейнера приложения (как у длинного экрана iPhone), только по вертикали. */
+/** Extra height for the frame and app container (like a tall iPhone screen), applied vertically only. */
 const EXTRA_HEIGHT = 20;
-/** На сколько px уменьшить ширину рамки (0 = на весь экран минус MARGIN). Рамка остаётся по центру. */
+/** How many px to reduce the frame width by (0 = full screen minus MARGIN). The frame stays centered. */
 const WIDTH_REDUCE = 10;
-/** Равномерный чёрный зазор между рамкой и экраном приложения. */
+/** Even black gap between the frame and the app screen. */
 const APP_GAP = 10;
-/** На сколько px расширить app-экран с каждой боковой стороны внутри рамки. */
+/** How many px to expand the app screen on each side inside the frame. */
 const APP_SIDE_EXPAND_PX = 1;
-/** Единый радиус углов экрана внутри рамки. */
+/** Shared corner radius for the screen inside the frame. */
 const APP_CORNER_RADIUS = 50;
-/** Внутренний отступ контента от краёв appContainer (чтобы не упираться в бордер). */
+/** Inner content inset from the appContainer edges so content does not touch the border. */
 const APP_CONTENT_INSET = 2;
 
-/** Единственный контейнер приложения в режиме рамки — один цвет рамки, чтобы видеть границы. */
+/** Single app container in frame mode with a single frame color so the boundaries stay visible. */
 const APP_CONTAINER_BORDER = 'transparent';
 const APP_CONTAINER_BG = 'transparent';
 
 /**
- * Временная обёртка: на iOS можно включить режим «рамка iPhone» для скриншотов/видео.
- * Viewport с теми же пропорциями (aspect ratio), что и полный экран — все элементы масштабируются как резина.
- * Рамка рисуется поверх (центр PNG должен быть прозрачным).
+ * Temporary wrapper: on iOS, an "iPhone frame" mode can be enabled for screenshots/videos.
+ * The viewport keeps the same aspect ratio as the full screen, so all elements scale proportionally.
+ * The frame is drawn on top, and the PNG center must stay transparent.
  */
 export default function DeviceFrameWrapper({ children }) {
   const insets = useSafeAreaInsets();
@@ -64,7 +64,7 @@ export default function DeviceFrameWrapper({ children }) {
           style={[styles.toggleBtn, { top: toggleTop }]}
           onPress={toggle}
           hitSlop={12}
-          accessibilityLabel="Включить рамку iPhone"
+          accessibilityLabel="Enable iPhone frame"
         >
           <Text style={styles.toggleLabel}>Frame</Text>
         </Pressable>
@@ -77,7 +77,7 @@ export default function DeviceFrameWrapper({ children }) {
   const scaleFactor = WIDTH_REDUCE > 0 ? (fullWidth - WIDTH_REDUCE) / fullWidth : 1;
   const rectW = fullWidth - 2 * INSET;
   const rectH = fullHeight - 2 * INSET;
-  /** Симметричный экран внутри рамки: одинаковые отступы сверху/снизу/слева/справа. */
+  /** Symmetric screen inside the frame with equal top, bottom, left, and right insets. */
   const contentW = rectW - 2 * APP_GAP + 54 + APP_SIDE_EXPAND_PX * 2;
   const contentH = rectH - 2 * APP_GAP-50;
   const appLeft = INSET + APP_GAP - 27.5 - APP_SIDE_EXPAND_PX;
@@ -88,7 +88,7 @@ export default function DeviceFrameWrapper({ children }) {
   const appHeightPx = Math.round(contentH);
   const innerW = Math.max(0, appWidthPx - 2 * APP_CONTENT_INSET);
   const innerH = Math.max(0, appHeightPx - 2 * APP_CONTENT_INSET);
-  /** Референс iPhone 14 (393×852 pt): статус-бар 44pt, горизонтальные отступы 20pt, вертикальный паддинг контента ~11pt. Левый блок (час) чуть смещён вправо от края, как на iPhone 17. */
+  /** iPhone 14 reference (393x852 pt): 44pt status bar, 20pt horizontal insets, ~11pt vertical content padding. The left block (time) is shifted slightly right from the edge, similar to iPhone 17. */
   const REF_IPHONE_W = 393;
   const REF_IPHONE_H = 852;
   const REF_STATUS_BAR_H = 44;
@@ -99,7 +99,7 @@ export default function DeviceFrameWrapper({ children }) {
   const statusBarPaddingLeft = Math.round(innerW * ((REF_STATUS_H_PAD + REF_STATUS_LEFT_EXTRA) / REF_IPHONE_W));
   const statusBarHeight = Math.round(innerH * (REF_STATUS_BAR_H / REF_IPHONE_H));
   const statusBarPaddingV = Math.round(innerH * (REF_STATUS_V_PAD / REF_IPHONE_H));
-  /** Dynamic Island: ширина и высота чуть увеличены, референс 393×852. */
+  /** Dynamic Island: width and height are slightly increased, based on the 393x852 reference. */
   const REF_DYNAMIC_ISLAND_W = 56 * 2.05;
   const REF_DYNAMIC_ISLAND_H = 34;
   const dynamicIslandW = Math.round(innerW * (REF_DYNAMIC_ISLAND_W / REF_IPHONE_W));
@@ -218,7 +218,7 @@ export default function DeviceFrameWrapper({ children }) {
             style={[styles.toggleBtn, styles.toggleBtnFrame]}
             onPress={toggle}
             hitSlop={12}
-            accessibilityLabel="Выключить рамку iPhone"
+            accessibilityLabel="Disable iPhone frame"
           >
             <Text style={styles.toggleLabel}>Frame ON</Text>
           </Pressable>
@@ -355,12 +355,12 @@ const styles = StyleSheet.create({
   },
 });
 
-// ─── Стили только для режима «в рамке» (уменьшенный вид) ───────────────────
-// Все элементы внутри страниц уменьшены на 6–10 px; размер самих страниц не трогаем.
-// Где подключаются: MainPager, AnimatedTabBar, HomeScreen, PostBlock, PostBlockSkeleton, MusicPlayer, экраны с хедером.
+// Styles used only in "framed" mode (reduced view).
+// All elements inside pages are reduced by 6-10 px; the page size itself stays unchanged.
+// Used by: MainPager, AnimatedTabBar, HomeScreen, PostBlock, PostBlockSkeleton, MusicPlayer, and screens with headers.
 //
-// Тёмно-серые карточки (5 страниц): стили только в рамке — frameModeStyles.pageCard.
-// Меняй здесь borderRadius, backgroundColor (если нужен свой оттенок) и т.д.
+// Dark-gray cards (5 pages): frame-only styles live in frameModeStyles.pageCard.
+// Tweak borderRadius, backgroundColor (if you want a custom tone), and similar values here.
 // -----------------------------------------------------------------------------
 const _frameSheet = StyleSheet.create({
   page: {},
@@ -374,9 +374,9 @@ const _frameSheet = StyleSheet.create({
   textSmall: { fontSize: 10 },
 });
 
-/** Нижний отступ таб-бара от края зелёного контейнера в режиме рамки. */
+/** Bottom offset of the tab bar from the edge of the green container in frame mode. */
 const FRAME_TAB_BAR_BOTTOM_PADDING = 8;
-/** Боковые отступы таб-бара от границ зелёного контейнера (слева и справа). */
+/** Side offsets of the tab bar from the green container boundaries (left and right). */
 const FRAME_TAB_BAR_HORIZONTAL_PADDING = 12;
 
 export const frameModeStyles = {

@@ -226,7 +226,7 @@ const StoryFooter: FC<StoryContentProps> = ( { stories, active, activeStory, onK
         <View style={ContentStyles.inputWrapper}>
           <TextInput
             style={ContentStyles.input}
-            placeholder="Сообщение..."
+            placeholder="Message..."
             placeholderTextColor="#8f9299"
             value={message}
             onChangeText={setMessage}

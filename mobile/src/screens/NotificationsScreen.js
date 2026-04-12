@@ -30,7 +30,7 @@ const { width: FALLBACK_WIDTH } = Dimensions.get('window');
 const DRAG_CLOSE_THRESHOLD = 80;
 const UNDERLAY_OFFSET_LEFT_PX = 44;
 const UNDERLAY_FOLLOW_FACTOR = 0.28;
-/** Быстрое плавное открытие/закрытие (как Chat/Settings). */
+/** Fast smooth open/close animation (like Chat/Settings). */
 const PANEL_ANIMATION_DURATION_MS = 180;
 
 const NOTIFICATIONS_SECTIONS = [
@@ -39,8 +39,8 @@ const NOTIFICATIONS_SECTIONS = [
 ];
 
 /**
- * Экран уведомлений: шапка (назад | Notifications | корзина), список по датам.
- * Подложка (MainPager) 44px влево, синхронно двигается при закрытии — как Chat/Settings.
+ * Notifications screen: header (back | Notifications | trash), list grouped by date.
+ * The MainPager underlay shifts 44px to the left and moves back in sync while closing, like Chat/Settings.
  */
 export default function NotificationsScreen({ visible, onClose, onClearAll, onTranslateX, onAnimateUnderlayToZero }) {
   const insets = useSafeAreaInsets();

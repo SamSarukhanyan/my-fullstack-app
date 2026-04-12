@@ -14,7 +14,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useViewport } from '../context/ViewportContext';
 import { frameModeStyles } from './DeviceFrameWrapper';
 
-// POST BLOCK — по макету: порядок сверху вниз
+// POST BLOCK: layout order from top to bottom according to the design
 const BLOCK_PADDING_H = 19;
 const AVATAR_SIZE = 46;
 const MAIN_IMAGE_HEIGHT = 186;
@@ -27,11 +27,11 @@ const POST_GLASS_OVERLAY_DARK = 'rgba(18,22,28,0.78)';
 const POST_GLASS_OVERLAY_LIGHT = 'transparent';
 
 /**
- * Один блок поста. Порядок элементов (сверху вниз):
- * 1. Ряд: аватар автора (46×46) | имя (Poppins 600, 15px) + время (Poppins 500, 12px)
- * 2. Текст описания поста
- * 3. Главное изображение (298×186, border-radius 10)
- * 4. Ряд: 3 аватарки лайкнувших | иконка лайка + число | иконка комментов + число
+ * Single post block. Element order from top to bottom:
+ * 1. Row: author avatar (46x46) | name (Poppins 600, 15px) + time (Poppins 500, 12px)
+ * 2. Post description text
+ * 3. Main image (298x186, border-radius 10)
+ * 4. Row: 3 avatars of users who liked it | like icon + count | comment icon + count
  * 5. "Liked by {username} and N+ others"
  * 6. "View all N comments"
  */
@@ -89,7 +89,7 @@ export default function PostBlock({
         ]}
         pointerEvents="none"
       />
-      {/* 1. Ряд: аватар | имя + время (тап открывает профиль автора) */}
+      {/* 1. Row: avatar | name + time (tap opens the author's profile) */}
       <View style={styles.headerRow}>
         {onAuthorPress ? (
           <TouchableOpacity

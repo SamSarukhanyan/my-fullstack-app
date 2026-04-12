@@ -1,15 +1,15 @@
 import { useState, useRef, useCallback } from 'react';
 import { triggerTabHaptic } from '../utils/haptics';
 
-/** Пиксели тяги вниз для срабатывания refresh; порог выше — только явный pull, не игра со скроллом. */
+/** Downward pull distance in pixels required to trigger refresh; a higher threshold allows only intentional pulls, not scroll play. */
 const DEFAULT_TRIGGER_PX = 28;
-/** Макс. время показа спиннера (спиннер всегда закроется, даже если запрос завис). */
+/** Maximum spinner display time; the spinner always stops even if the request hangs. */
 const MAX_REFRESH_MS = 15000;
-/** После завершения рефреша — задержка перед разрешением следующего. */
+/** Delay after refresh completes before allowing the next one. */
 const RESET_TRIGGER_AFTER_MS = 500;
-/** Макс. изменение y за кадр (px): больше = bounce/игра скроллом, не рефреш. */
+/** Maximum y change per frame in px; larger values are treated as bounce/scroll play, not refresh. */
 const MAX_DELTA_PER_FRAME_PX = 14;
-/** Мин. время (ms) «стояния» у верха перед разрешением рефреша — чтобы скролл вверх до верха не считался pull. */
+/** Minimum time in ms spent at the top before refresh is allowed, so reaching the top by scrolling up does not count as a pull. */
 const AT_TOP_COOLDOWN_MS = 450;
 
 export function useEarlyRefresh(refreshCallback, triggerPx = DEFAULT_TRIGGER_PX) {

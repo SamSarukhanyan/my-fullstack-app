@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 import { Skeleton } from 'moti/skeleton';
 import { useTheme } from '../context/ThemeContext';
 
-/** Skeleton.Group — для синхронной анимации нескольких скелетонов */
+/** Skeleton.Group keeps multiple skeleton animations synchronized. */
 export const SkeletonGroup = Skeleton.Group;
 
 /**
- * Общие props скелетона. translateX.duration — скорость бегущего градиента
- * (в moti build используется translateX с duration: 3000, тут 1000 = ~3× быстрее).
+ * Shared skeleton props. translateX.duration controls the moving gradient speed
+ * (the moti build uses translateX with duration: 3000; 1000 here is about 3x faster).
  */
 const SKELETON_TRANSITION = {
   translateX: {
@@ -20,8 +20,8 @@ const SKELETON_TRANSITION = {
 };
 
 /**
- * Обёртка над moti Skeleton с темой и общими стилями.
- * Обязательно оборачивать в SkeletonGroup для синхронной анимации.
+ * Wrapper around moti Skeleton with theme support and shared styles.
+ * Must be wrapped in SkeletonGroup for synchronized animation.
  */
 export function SkeletonBox({ style, backgroundColor, radius, children, ...rest }) {
   const { theme, colors } = useTheme();

@@ -33,9 +33,9 @@ const UNDERLAY_FOLLOW_FACTOR = 0.28;
 
 
 /**
- * Мой профиль (My Profile): по скриншоту — шапка (назад | My Profile | Settings),
- * аватар, имя, локация, био, кнопка Edit Profile, статистика, сетка постов.
- * Свайп вправо и подложка — как в ChatScreen.
+ * My Profile screen: according to the screenshot it includes the header (back | My Profile | Settings),
+ * avatar, name, location, bio, Edit Profile button, stats, and post grid.
+ * Right swipe and background behavior match ChatScreen.
  */
 export default function MyProfileScreen({
   visible,

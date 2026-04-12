@@ -27,10 +27,10 @@ const HEADER_HEIGHT = 48;
 const CONTENT_PADDING_H = 16;
 const FOOTER_INPUT_BAR_HEIGHT = 44;
 const INPUT_BORDER_RADIUS = 24;
-/** Отступ между нижним краем инпута и верхом клавиатуры (px). */
+/** Gap between the input bottom edge and the keyboard top in px. */
 const KEYBOARD_INPUT_GAP_PX = 5;
 
-/** Размеры и отступы скелетонов — точная копия All Messages (MessagesScreen): две строки — короткая и длинная. */
+/** Skeleton sizes and spacing mirror All Messages (MessagesScreen): two lines, one short and one long. */
 const CHAT_SKELETON_LINE1_WIDTH = 90;
 const CHAT_SKELETON_LINE1_HEIGHT = 14;
 const CHAT_SKELETON_LINE1_MARGIN_BOTTOM = 8;
@@ -40,7 +40,7 @@ const CHAT_SKELETON_LINE2_MARGIN_TOP = 2;
 const CHAT_SKELETON_BORDER_RADIUS = 8;
 const CHAT_SKELETON_BODY_GAP = 4;
 const CHAT_SKELETON_MESSAGE_MARGIN_BOTTOM = 14;
-/** Фейковые сообщения: у каждого две строки (line1Width, line2Width), isSender — слева/справа. Размеры как в Chats. */
+/** Mock messages: each has two lines (line1Width, line2Width), isSender controls left/right alignment. Sizes match Chats. */
 const CHAT_SKELETON_MESSAGES = [
   { isSender: false, line1Width: 90, line2Width: 140 },
   { isSender: true, line1Width: 70, line2Width: 120 },
@@ -53,15 +53,15 @@ const CHAT_SKELETON_MESSAGES = [
 ];
 
 /**
- * Экран одного чата (Conversation): шапка (назад | имя | Last seen), лента сообщений (пока скелетоны), нижняя панель ввода.
- * По макету Figma CHAT 375×812: отправитель слева (teal), получатель справа (светло-серый), даты по центру.
- * Сделано под последующее подключение API: скелетоны — фиксированное место под реальные сообщения.
+ * Single chat screen (Conversation): header (back | name | Last seen), message list (currently skeletons), bottom input bar.
+ * Based on Figma CHAT 375x812: sender on the left (teal), recipient on the right (light gray), dates centered.
+ * Built for future API wiring: skeletons reserve fixed space for real messages.
  */
-/** Подложка смещена влево при открытом чате — край экрана в середине avatar (44px). */
+/** Underlay shifts left when the chat is open so the screen edge lands at the avatar midpoint (44px). */
 const UNDERLAY_OFFSET_LEFT_PX = 44;
 const UNDERLAY_FOLLOW_FACTOR = 0.28;
 const DRAG_CLOSE_THRESHOLD = 80;
-/** Свайп с правого края влево: макс. сдвиг 56px, тугая резина (сложнее тянуть). */
+/** Swipe from the right edge to the left: max shift 56px, with stiff rubber-band resistance. */
 const LEFT_RUBBER_BAND_MAX_PX = 56;
 const PANEL_OPEN_DURATION_MS = 260;
 const PANEL_CLOSE_DURATION_MS = 260;

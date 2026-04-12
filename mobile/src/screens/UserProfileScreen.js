@@ -41,8 +41,8 @@ const PANEL_CLOSE_DURATION_MS = 260;
 
 const FOLLOWERS_SKELETON_COUNT = 5;
 /**
- * Профиль другого пользователя (по Figma PROFILE 87-357).
- * Шапка (назад | Profile), аватар + имя + локация + био, Follow + чат, статистика, Followers, сетка постов 99×99.
+ * Another user's profile (based on Figma PROFILE 87-357).
+ * Header (back | Profile), avatar + name + location + bio, Follow + chat, stats, Followers, 99x99 post grid.
  */
 export default function UserProfileScreen({
   visible,
@@ -208,7 +208,7 @@ export default function UserProfileScreen({
         <View style={[styles.headerBtn, headerBtnStyle]} />
       </View>
 
-      {/* Один скролл на всю страницу: один спиннер только вверху; свайп по области постов двигает всю страницу и при pull вверху — рефреш */}
+      {/* One scroll for the whole page: a single spinner at the top; swiping over the posts area moves the whole page, and pulling at the top triggers refresh */}
       <ScrollView
         style={styles.mainScroll}
         contentContainerStyle={[styles.mainScrollContent, { paddingBottom: 24 + (insets.bottom || 0) }]}
@@ -228,7 +228,7 @@ export default function UserProfileScreen({
         }
       >
         <View style={styles.topContent}>
-          {/* Верхний блок: аватар + имя (жирное); второе поле — тот же юзернейм мельче и обычным стилем; сообщение + Follow */}
+          {/* Top block: avatar + bold name; the second field is the same username in a smaller regular style; message + Follow */}
           <View style={styles.profileRow}>
           <View style={[styles.avatarWrap, isFrameMode && { marginRight: 12 }]}>
             {profile.avatar || profile.picture_url ? (
@@ -248,7 +248,7 @@ export default function UserProfileScreen({
               <SkeletonBox style={styles.profileUserNameSkeleton} backgroundColor={colors.skeletonBg} />
               <SkeletonBox style={styles.profileUserNameSecondarySkeleton} backgroundColor={colors.skeletonBg} />
             </SkeletonGroup>
-            {/* Сообщение + Follow */}
+            {/* Message + Follow */}
             <View style={styles.actionsRow}>
               <TouchableOpacity
                 style={[styles.chatBtn, { borderColor: colors.borderLight }]}
@@ -267,13 +267,13 @@ export default function UserProfileScreen({
               </GradientButton>
             </View>
           </View>
-          {/* Три точки: верхний правый угол верхнего блока */}
+          {/* Three dots: top-right corner of the upper block */}
           <TouchableOpacity style={[styles.moreBtnTop, isFrameMode && headerBtnStyle]} activeOpacity={0.7}>
             <Ionicons name="ellipsis-vertical" size={isFrameMode ? 16 : 20} color={colors.text} />
           </TouchableOpacity>
         </View>
 
-        {/* Статистика */}
+        {/* Stats */}
         <View style={[styles.statsRow, { borderColor: colors.borderLight }]}>
           <SkeletonGroup show={true}>
             <View style={styles.statBlock}>
@@ -293,7 +293,7 @@ export default function UserProfileScreen({
           </SkeletonGroup>
         </View>
 
-        {/* Followers — заголовок и слайд с отступом как у «Posts» (16px слева) */}
+        {/* Followers: title and slider with the same inset as "Posts" (16px on the left) */}
         <View style={styles.followersWrap}>
           <Text style={[styles.sectionTitle, styles.followersTitleIndent, isFrameMode && frameModeStyles.text, { color: colors.text }]}>Followers</Text>
           <ScrollView
@@ -313,7 +313,7 @@ export default function UserProfileScreen({
         </View>
         </View>
 
-        {/* Блок постов: часть общего скролла, без своего спиннера — при свайпе здесь двигается вся страница, рефреш один вверху */}
+        {/* Posts block: part of the shared scroll with no separate spinner; swiping here moves the whole page, with a single refresh at the top */}
         <View style={styles.postsSectionHeader}>
           <Text style={[styles.sectionTitle, isFrameMode && frameModeStyles.text, { color: colors.text }]}>Posts</Text>
         </View>

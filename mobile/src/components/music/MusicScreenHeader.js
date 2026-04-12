@@ -14,7 +14,7 @@ const SEARCH_ICON_SIZE = 20;
 const BTN_SIZE = 36;
 
 /**
- * Хедер Music-страницы: поиск + маленькая квадратная кнопка справа.
+ * Music screen header: search plus a small square button on the right.
  */
 export default function MusicScreenHeader({
   searchValue,
@@ -22,7 +22,7 @@ export default function MusicScreenHeader({
   onAddPress,
   onAddPressDisabled,
   adding,
-  placeholder = 'Поиск музыки',
+  placeholder = 'Search music',
 }) {
   const { colors } = useTheme();
 

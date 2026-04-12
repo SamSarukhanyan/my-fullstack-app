@@ -12,8 +12,8 @@ import { useTheme } from '../../context/ThemeContext';
 const SEARCH_ICON_SIZE = 20;
 
 /**
- * Input поиска с иконкой внутри, скруглённые углы.
- * glassBackground: матовый прозрачный стеклянный фон (BlurView).
+ * Search input with an icon inside and rounded corners.
+ * glassBackground: frosted transparent glass background (BlurView).
  */
 export default function MusicSearchInput({
   searchValue,

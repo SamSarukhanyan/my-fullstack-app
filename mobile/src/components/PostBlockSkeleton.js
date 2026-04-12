@@ -17,8 +17,8 @@ const POST_GLASS_OVERLAY_DARK = 'rgba(18,22,28,0.78)';
 const POST_GLASS_OVERLAY_LIGHT = 'transparent';
 
 /**
- * Скелетон одного поста: те же размеры и порядок элементов, что в PostBlock.
- * При тапе на круглый аватар вызывается onAvatarPress(null) — открыть профиль со скелетонами.
+ * Skeleton for a single post: same sizes and element order as PostBlock.
+ * Tapping the circular avatar calls onAvatarPress(null) to open the profile with skeletons.
  */
 export default function PostBlockSkeleton({ onAvatarPress }) {
   const { colors, theme } = useTheme();
@@ -54,7 +54,7 @@ export default function PostBlockSkeleton({ onAvatarPress }) {
         pointerEvents="none"
       />
       <SkeletonGroup show={true}>
-        {/* 1. Ряд: аватар (тап → открыть профиль) | имя + время */}
+        {/* 1. Row: avatar (tap -> open profile) | name + time */}
         <View style={styles.headerRow}>
           {onAvatarPress ? (
             <TouchableOpacity
@@ -72,7 +72,7 @@ export default function PostBlockSkeleton({ onAvatarPress }) {
           </View>
         </View>
 
-        {/* 2. Описание — две строки */}
+        {/* 2. Description: two lines */}
         <View style={styles.descLineWrap}>
           <SkeletonBox style={[styles.descLine, isFrameMode && { height: descHeight }]} backgroundColor={TONES.desc1} />
         </View>
@@ -80,7 +80,7 @@ export default function PostBlockSkeleton({ onAvatarPress }) {
           <SkeletonBox style={[styles.descLineShort, isFrameMode && { height: descHeight }]} backgroundColor={TONES.desc2} />
         </View>
 
-        {/* 3. Главное изображение */}
+        {/* 3. Main image */}
         <View style={styles.mainImageWrap}>
           <SkeletonBox
             style={StyleSheet.flatten([styles.mainImage, isFrameMode && { height: mainImageHeight }])}
@@ -88,7 +88,7 @@ export default function PostBlockSkeleton({ onAvatarPress }) {
           />
         </View>
 
-        {/* 4. Ряд: 3 круглых скелетона (аватарки лайкнувших) | два блока (лайк, комменты) */}
+        {/* 4. Row: 3 circular skeletons (liked-by avatars) | two blocks (like, comments) */}
         <View style={styles.actionsRow}>
           <View style={[styles.likedAvatars, isFrameMode && { width: likedAvatarSize * 3 - 16, height: likedAvatarSize }]}>
             {[1, 2, 3].map((i) => (

@@ -1,5 +1,5 @@
 /**
- * Единая палитра приложения. Только эти 10 цветов (от самого тёмного к самому светлому):
+ * Unified app palette. Only these 10 colors are used (from darkest to lightest):
  * #1C232C #2E3948 #404F64 #516580 #637C9C #7F93AD #9BABBF #B7C3D1 #D3DAE3 #EFF2F5
  */
 
@@ -22,7 +22,7 @@ const LIGHT_INPUT_SURFACE = '#e2e2e2';
 const LIGHT_PLACEHOLDER = '#7f848c';
 const DARK_APP_BG = '#0d1015';
 
-/** Светлая тема: фоны из светлой части палитры, текст из тёмной. */
+/** Light theme: backgrounds come from the lighter part of the palette, text from the darker part. */
 export const lightColors = {
   background: '#f4f5f7',
   surface: '#f4f5f7',
@@ -75,7 +75,7 @@ export const lightColors = {
   buttonGhostText: '#5A5CFF',
 };
 
-/** Тёмная тема: фоны из тёмной части палитры, текст из светлой. */
+/** Dark theme: backgrounds come from the darker part of the palette, text from the lighter part. */
 export const darkColors = {
   background: DARK_APP_BG,
   surface: DARK_APP_BG,

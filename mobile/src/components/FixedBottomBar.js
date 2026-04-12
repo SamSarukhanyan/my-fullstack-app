@@ -3,23 +3,23 @@ import { View, StyleSheet } from 'react-native';
 import { BOTTOM_BAR_CONTENT_HEIGHT } from '../constants/bottomBar';
 
 /**
- * Нижний блок фиксированной высоты на всех 4 экранах (Splash, Onboarding02, Phone, Verification).
- * Одинаковая вертикальная позиция кнопки Next/Continue, строки «Already have an account? Sign In» и нижней линии.
+ * Fixed-height bottom block shared across 4 screens (Splash, Onboarding02, Phone, Verification).
+ * Keeps the same vertical position for the Next/Continue button, the "Already have an account? Sign In" row, and the bottom line.
  */
 export function FixedBottomBar({ insets, skipButton, primaryButton, signInRow, bottomLine, backgroundColor }) {
   const barHeight = BOTTOM_BAR_CONTENT_HEIGHT + (insets?.bottom ?? 0);
 
   return (
     <View style={[styles.bar, { height: barHeight, paddingBottom: insets?.bottom ?? 0, backgroundColor: backgroundColor ?? '#FFFFFF' }]}>
-      {/* 0–80: область под Skip (Onboarding02) или пустое место */}
+      {/* 0–80: area for Skip (Onboarding02) or empty space */}
       <View style={styles.topArea}>
         {skipButton ? <View style={styles.skipWrap}>{skipButton}</View> : null}
       </View>
-      {/* 80–132: кнопка Next/Continue */}
+      {/* 80–132: Next/Continue button */}
       <View style={styles.primaryWrap}>{primaryButton}</View>
-      {/* 148–172: строка Sign In или заглушка по высоте */}
+      {/* 148–172: Sign In row or a height placeholder */}
       <View style={styles.signInArea}>{signInRow ?? <View style={styles.signInPlaceholder} />}</View>
-      {/* 180–200: индикатор или progress bar */}
+      {/* 180–200: indicator or progress bar */}
       <View style={styles.bottomLineWrap}>{bottomLine}</View>
     </View>
   );

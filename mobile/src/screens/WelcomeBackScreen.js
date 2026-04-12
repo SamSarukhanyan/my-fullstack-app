@@ -5,8 +5,8 @@ import GradientButton from '../components/GradientButton';
 import { useViewport } from '../context/ViewportContext';
 
 /**
- * Figma: WELCOME BACK (92-416). После Pick a new Password. БЕЗ стрелки назад.
- * Круг 183×183 #F2F2F2, mini ellipses (пузырьки) 14×14, mini stars 21×21 — в случайных местах вокруг круга.
+ * Figma: WELCOME BACK (92-416). Comes after Pick a new Password. NO back arrow.
+ * Circle 183x183 #F2F2F2, mini ellipses (bubbles) 14x14, mini stars 21x21 placed randomly around the circle.
  */
 const DARK_BG = '#0d1015';
 const DARK_PANEL = '#151c26';

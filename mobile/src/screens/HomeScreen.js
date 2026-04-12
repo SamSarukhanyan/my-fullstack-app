@@ -113,7 +113,7 @@ export default function HomeScreen({ onOpenStory, onOpenNotifications, onOpenUse
     }
   }, [token]);
 
-  // Как на остальных страницах: спиннер 200ms, загрузка постов в фоне
+  // Same as on the other pages: 200 ms spinner, posts load in the background
   const refreshCallback = React.useCallback(async () => {
     loadPosts();
     await new Promise((r) => setTimeout(r, 400));
@@ -293,7 +293,7 @@ export default function HomeScreen({ onOpenStory, onOpenNotifications, onOpenUse
           </ScrollView>
         </View>
 
-        {/* Лента: при загрузке или без постов — скелетоны (те же размеры/порядок, что посты); иначе — посты */}
+        {/* Feed: on loading or with no posts, show skeletons (same sizes/order as posts); otherwise render posts */}
         <View style={styles.feedSection}>
           {postsLoading || posts.length === 0 ? (
             <>

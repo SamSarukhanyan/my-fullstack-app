@@ -159,8 +159,8 @@ function GalleryStack({ onClose }) {
 }
 
 /**
- * Экран-галерея (пример с shared transition и Reanimated).
- * Показывается вместо сторис при открытии из главной.
+ * Gallery screen example using shared transition and Reanimated.
+ * Displayed instead of stories when opened from the main screen.
  */
 export default function GalleryExampleScreen({ visible, onClose }) {
   if (!visible) return null;

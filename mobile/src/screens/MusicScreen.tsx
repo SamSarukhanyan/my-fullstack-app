@@ -40,7 +40,7 @@ const UNKNOWN_ARTIST = 'Unknown Artist';
 const TOTAL_ROWS = 8;
 const TRACK_COVER_SIZE = 44;
 const SEGMENT_OPTIONS = [ 'My Music', 'Follows', 'Recommendation' ];
-/** Компактные размеры скелетонов строк только в frame mode (в рамке iPhone). */
+/** Compact row skeleton sizes used only in frame mode (inside the iPhone frame). */
 const FRAME_TRACK_ROW_PADDING_V = 5;
 const FRAME_TRACK_ROW_MARGIN_B = 3;
 const FRAME_TRACK_ROW_MIN_H = 36;

@@ -1,4 +1,4 @@
-# Один формат переносов строк — меньше конфликтов при push с VSCode, GoLand, сервера
+# One line-ending format to reduce conflicts when pushing from VSCode, GoLand, or the server
 * text=auto eol=lf
 *.{yml,yaml} text eol=lf
 *.{js,jsx,cjs,ts,tsx,json,css,html,md} text eol=lf

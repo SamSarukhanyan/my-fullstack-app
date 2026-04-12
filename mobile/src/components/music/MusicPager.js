@@ -9,8 +9,8 @@ const NUM_PAGES = 3;
 const PAGE_GAP = 8;
 
 /**
- * Горизонтальный pager с 3 страницами.
- * Поведение как у MainPager: snap, gap, haptics, без скругления углов.
+ * Horizontal pager with 3 pages.
+ * Behaves like MainPager: snap, gap, haptics, and no rounded corners.
  */
 export default function MusicPager({
   currentIndex,

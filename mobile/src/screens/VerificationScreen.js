@@ -18,7 +18,7 @@ import { useViewport } from '../context/ViewportContext';
 
 /**
  * Figma: VERIFICATION (87-1149) — OTP entry.
- * Без статус-бара (часы, антенны, зарядка не отображаются). Кнопка «Назад» + свайп назад.
+ * No status bar (time, signal, and battery are hidden). Includes a back button and swipe-back gesture.
  */
 const SWIPE_EDGE_WIDTH = 0.15;
 const SWIPE_MIN_DX = 55;

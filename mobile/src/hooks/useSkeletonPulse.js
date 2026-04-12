@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Animated } from 'react-native';
 
-/** Пульсирующая анимация для скелетонов. Возвращает Animated.Value (0.5..1). */
+/** Pulsing animation for skeletons. Returns an Animated.Value in the 0.5..1 range. */
 export function useSkeletonPulse() {
   const pulse = useRef(new Animated.Value(0.55)).current;
 

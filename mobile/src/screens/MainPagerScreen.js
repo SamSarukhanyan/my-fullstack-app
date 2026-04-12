@@ -40,7 +40,7 @@ function mapToStoryUsers(payload) {
   });
 }
 
-/** Типы экранов оверлея для стека навигации. */
+/** Overlay screen types used in the navigation stack. */
 const NAV_TYPES = {
   story: 'story',
   notifications: 'notifications',
@@ -66,8 +66,8 @@ function isSameEntry(a, b) {
 
 /**
  * Main app shell: 5-tab horizontal pager (Home | Music | Create | Messages | Profile).
- * Стек навигации: при открытии оверлея — push, при «назад»/свайпе назад — pop.
- * Возврат всегда на предыдущий экран в порядке открытия (как в Instagram).
+ * Navigation stack: opening an overlay pushes it, and back/swipe-back pops it.
+ * Return always goes to the previously opened screen in opening order (like Instagram).
  */
 export default function MainPagerScreen() {
   const [navStack, setNavStack] = useState([]);
